@@ -1,0 +1,25 @@
+<div class="backdrop"></div>
+
+<div class="content">
+    <h1>{{title}}</h1>
+    <div class="datepicker-container">
+        <label>date</label>
+        <input [disabled]="!isOwner ? true : false" matInput [matDatepicker]="Orderdate" (dateChange)="updateEventDate($event)" placeholder="{{this.date}}">
+        <mat-datepicker-toggle matSuffix [for]="Orderdate"></mat-datepicker-toggle>
+        <mat-datepicker #Orderdate></mat-datepicker> 
+    </div>
+    <div>
+        <label>start time</label>
+        <input [disabled]="!isOwner ? true : false" id="startTimeInput" [ngxTimepicker]="startTime" [format]="24">
+        <ngx-material-timepicker #startTime (timeSet)="setStartTime($event)"></ngx-material-timepicker>
+    </div>
+    <div>
+        <label>end time</label>
+        <input [disabled]="!isOwner ? true : false" id="endTimeInput" [ngxTimepicker]="endTime" [format]="24">
+        <ngx-material-timepicker #endTime (timeSet)="setEndTime($event)"></ngx-material-timepicker>
+    </div>
+    <div class="buttonBox" *ngIf="isOwner">
+        <input type="submit" class="Submit Button" value="submit" (click)="onSubmit()"/>
+        <input type="submit" class="Remove Button" *ngIf="isOwner && !createMode" value="remove" (click)="onRemuve()"/>
+    </div>
+</div>

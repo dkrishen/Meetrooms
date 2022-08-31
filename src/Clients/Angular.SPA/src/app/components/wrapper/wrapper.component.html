@@ -1,0 +1,9 @@
+<div class="mainBox">
+    <app-nav-menu></app-nav-menu>
+    <div class="content" *ngIf="token">
+        <app-side-menu></app-side-menu>
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

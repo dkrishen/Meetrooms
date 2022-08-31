@@ -1,0 +1,56 @@
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.Submit {
+    background-color: #04AA6D;
+}
+
+.Button {
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.buttonBox{
+    width: 100%;
+}
+
+.Remove {
+    background-color: #aa3004;
+}
+  
+input[type=submit]:hover {
+    opacity: 0.8;
+}
+
+.content {
+    display: flex;
+    padding: 0 16px;
+    max-width: 960px;
+    flex-direction: column;
+    align-items: center;
+}
+
+button:hover{
+    background-color: primary
+}
+
+mat-datepicker-toggle {
+    position: absolute;
+    right: 0px;
+    top: 28px;
+    
+}
+
+.datepicker-container {
+    position: relative;
+}
+

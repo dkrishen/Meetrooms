@@ -1,0 +1,38 @@
+.spacer {
+  flex: 1;
+}
+
+.toolbar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+}
+
+.toolbar a, .toolbar input {
+  margin: 0 16px;
+  color:aliceblue;
+}
+
+.toolbar a, .toolbar input {
+  opacity: 0.8;
+}
+
+input[type=submit] {
+  background-color: rgb(36, 167, 179);
+  color: white;
+  padding: 7px 10px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  opacity: 0.5;
+}
+
+.logo{
+  margin: 10px;
+}
