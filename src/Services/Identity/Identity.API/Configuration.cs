@@ -34,7 +34,7 @@ namespace MRA.Identity
                         "ApiScope"
                     }
                 },
-                new ApiResource("MRABooks", "MRA.BOOKS",
+                new ApiResource("MRABookings", "MRA.BOOKINGS",
                     new [] { JwtClaimTypes.Name })
                 {
                     Scopes =

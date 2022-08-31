@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace MRA.Bookings.Models
+namespace MRA.Gateway.Models
 {
-    public partial class Book
+    public class Booking
     {
-        public Guid Id { get; set; }
         public Guid MeetingRoomId { get; set; }
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }

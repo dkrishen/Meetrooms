@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog'
-import { InputOrderFormDto } from 'src/app/models/InputOrderFormDto';
+import { InputBookingFormDto } from 'src/app/models/InputBookingFormDto';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Order } from 'src/app/models/order';
+import { Booking } from 'src/app/models/booking';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
@@ -17,7 +17,7 @@ export class SelectDateDialogBoxComponent implements OnInit {
   public endTime?: string;
   public isOwner?: boolean;
   public createMode?: boolean;
-  public orders?: Order[];
+  public bookings?: Booking[];
   public previousStartTime?: string;
   public previousEndTime?: string;
 
@@ -36,7 +36,7 @@ export class SelectDateDialogBoxComponent implements OnInit {
    }
 
   onSubmit(){
-    var data = new InputOrderFormDto();
+    var data = new InputBookingFormDto();
 
     data.date = this.date;
     data.startTime = this.startTime;
@@ -65,7 +65,7 @@ export class SelectDateDialogBoxComponent implements OnInit {
     this.endTime = eventValue;
   } 
   
-  validateTime(data: InputOrderFormDto){
+  validateTime(data: InputBookingFormDto){
     if(data.startTime == undefined || data.endTime == undefined || data.date == undefined){
       alert("fields must be filled")
       return false
@@ -75,10 +75,10 @@ export class SelectDateDialogBoxComponent implements OnInit {
       return false;
     }
 
-    var orderDate = new Date(data.date);
-    var dayOrders = this.orders?.filter(order => {
-      var date = new Date(order.date)
-      if(date.toString()==orderDate.toString()){
+    var bookingDate = new Date(data.date);
+    var dayBookings = this.bookings?.filter(booking => {
+      var date = new Date(booking.date)
+      if (date.toString() ==bookingDate.toString()){
         return true
       }
       else {
@@ -86,12 +86,12 @@ export class SelectDateDialogBoxComponent implements OnInit {
       }
     });
 
-    var collision = dayOrders?.filter(order => {
+    var collision = dayBookings?.filter(booking => {
         if(data.startTime != undefined && data.endTime != undefined){
-          if(((data.startTime > order.startTime && data.startTime < order.endTime)||
-          (data.endTime > order.startTime && data.endTime < order.endTime) ||
-          (order.startTime > data.startTime && order.startTime < data.endTime))&&
-          !(order.startTime==this.previousStartTime&&order.endTime==this.previousEndTime)){
+          if (((data.startTime > booking.startTime && data.startTime < booking.endTime)||
+            (data.endTime > booking.startTime && data.endTime < booking.endTime) ||
+            (booking.startTime > data.startTime && booking.startTime < data.endTime))&&
+            !(booking.startTime == this.previousStartTime && booking.endTime==this.previousEndTime)){
             return true;
           }
           else return false;

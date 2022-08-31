@@ -4,9 +4,9 @@
     <h1>{{title}}</h1>
     <div class="datepicker-container">
         <label>date</label>
-        <input [disabled]="!isOwner ? true : false" matInput [matDatepicker]="Orderdate" (dateChange)="updateEventDate($event)" placeholder="{{this.date}}">
-        <mat-datepicker-toggle matSuffix [for]="Orderdate"></mat-datepicker-toggle>
-        <mat-datepicker #Orderdate></mat-datepicker> 
+        <input [disabled]="!isOwner ? true : false" matInput [matDatepicker]="Bookingdate" (dateChange)="updateEventDate($event)" placeholder="{{this.date}}">
+        <mat-datepicker-toggle matSuffix [for]="Bookingdate"></mat-datepicker-toggle>
+        <mat-datepicker #Bookingdate></mat-datepicker> 
     </div>
     <div>
         <label>start time</label>

@@ -3,14 +3,14 @@ import { Inject, Injectable } from '@angular/core';
 import { Guid } from 'guid-typescript';
 import { Observable } from 'rxjs';
 import { BACK_API_URL } from '../app-injection-tokens';
-import { InputOrderFormDto } from '../models/InputOrderFormDto';
-import { Order } from '../models/order';
+import { InputBookingFormDto } from '../models/InputBookingFormDto';
+import { Booking } from '../models/booking';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class BookingService {
 
   constructor(
     private http: HttpClient,
@@ -18,23 +18,23 @@ export class OrderService {
     @Inject(BACK_API_URL) private apiUrl: string,
   ) { }
 
-  getAllOrders(): Observable<Order[]> {
+  getAllBookings(): Observable<Booking[]> {
     this.authService.updateToken();
-    return this.http.get<Order[]>(this.apiUrl + "api/order/GetAllOrders")
+    return this.http.get<Booking[]>(this.apiUrl + "api/booking/GetAllBookings")
   }
   
-  getOrdersByUser(): Observable<Order[]> { 
+  getBookingsByUser(): Observable<Booking[]> { 
     this.authService.updateToken();
-    return this.http.get<Order[]>(this.apiUrl + "api/order/GetOrdersByUser")
+    return this.http.get<Booking[]>(this.apiUrl + "api/booking/GetBookingsByUser")
   }
 
-  postOrder(data: InputOrderFormDto): Observable<any> {
+  postBooking(data: InputBookingFormDto): Observable<any> {
     this.authService.updateToken();
     const body = {date: data.date, startTime: data.startTime, endTime: data.endTime}
-    return this.http.post<any>(this.apiUrl + "api/order/AddOrder", body);
+    return this.http.post<any>(this.apiUrl + "api/booking/AddBooking", body);
   }
 
-  updateOrder(data: Order): Observable<any> {
+  updateBooking(data: Booking): Observable<any> {
     this.authService.updateToken();
     const body = {
       date: data.date, 
@@ -44,12 +44,12 @@ export class OrderService {
       meetingRoomId: data.meetingRoomId,
       userId: data.userId,
     }
-    return this.http.put<any>(this.apiUrl + "api/order/UpdateOrder", body);
+    return this.http.put<any>(this.apiUrl + "api/booking/UpdateBooking", body);
   }
 
-  deleteOrder(id: Guid): Observable<any> {
+  deleteBooking(id: Guid): Observable<any> {
     this.authService.updateToken();
     const body = { id: id }
-    return this.http.delete<any>(this.apiUrl + "api/order/DeleteOrder", {body: body});
+    return this.http.delete<any>(this.apiUrl + "api/booking/DeleteBooking", {body: body});
   }
 }

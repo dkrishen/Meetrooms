@@ -3,11 +3,11 @@ import { Booking } from 'src/app/models/booking';
 import { BookingService } from 'src/app/services/booking.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-bookings',
+  templateUrl: './bookings.component.html',
+  styleUrls: ['./bookings.component.css']
 })
-export class HomeComponent implements OnInit {
+export class BookingsComponent implements OnInit {
 
   bookings: Booking[] = []
   columns = ['meetingRoomName', 'username', 'date', 'startTime', 'endTime']
@@ -15,9 +15,9 @@ export class HomeComponent implements OnInit {
   constructor(private bookingService: BookingService) { }
 
   ngOnInit(): void {
-    this.bookingService.getAllBookings()
-      .subscribe(res => {
-        this.bookings = res
+    this.bookingService.getBookingsByUser()
+      .subscribe(result => {
+        this.bookings = result
       })
   }
 }

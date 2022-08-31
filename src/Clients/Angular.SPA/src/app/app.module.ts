@@ -17,7 +17,7 @@ import { MatDatepickerModule} from '@angular/material/datepicker'
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 import { HomeComponent } from './components/home/home.component';
-import { OrdersComponent } from './components/orders/orders.component';
+import { BookingsComponent } from './components/bookings/bookings.component';
 import { AUTH_API_URL, BACK_API_URL } from './app-injection-tokens';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from './services/auth.service';
@@ -47,7 +47,7 @@ FullCalendarModule.registerPlugins([
   declarations: [
     AppComponent,
     HomeComponent,
-    OrdersComponent,
+    BookingsComponent,
     WrapperComponent,
     NavMenuComponent,
     SideMenuComponent,

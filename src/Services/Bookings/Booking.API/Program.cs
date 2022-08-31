@@ -17,7 +17,7 @@ namespace MRA.Bookings
                 var serviceProvider = scope.ServiceProvider;
                 try
                 {
-                    var context = serviceProvider.GetRequiredService<MRABooksDbContext>();
+                    var context = serviceProvider.GetRequiredService<MRABookingsDbContext>();
                     DbInitializer.Initialize(context);
                 }
                 catch (Exception) { }

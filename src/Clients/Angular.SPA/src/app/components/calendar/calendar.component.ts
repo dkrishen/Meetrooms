@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/angular';
 import { DateClickArg } from '@fullcalendar/interaction';
-import { Order } from 'src/app/models/order';
-import { OrderService } from 'src/app/services/order.service';
+import { Booking } from 'src/app/models/booking';
+import { BookingService } from 'src/app/services/booking.service';
 import { MatDialog } from '@angular/material/dialog'
 import { SelectDateDialogBoxComponent } from '../select-date-dialog-box/select-date-dialog-box.component';
 import { UserService } from 'src/app/services/user.service';
@@ -14,13 +14,13 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
-  orders: Order[] = []
+  bookings: Booking[] = []
   events: EventInput[] = []
 
   currentUsername: string | null = '';
 
   constructor(
-    private orderService: OrderService,
+    private bookingService: BookingService,
     private dialog: MatDialog,
     private userService: UserService,
     @Inject(DOCUMENT) private document: Document) { 
@@ -28,9 +28,9 @@ export class CalendarComponent implements OnInit {
   }
 
   createCalendar(){
-    this.orderService.getAllOrders()
+    this.bookingService.getAllBookings()
     .subscribe(result => {
-      this.orders = result
+      this.bookings = result
       this.setEvents();
       this.calendarOptions.events = this.events;  
     })
@@ -65,19 +65,19 @@ export class CalendarComponent implements OnInit {
   handleDateClick(arg: DateClickArg) {
     let dialogRef = this.dialog.open(SelectDateDialogBoxComponent,{
       width: '250px',
-      data: {'title':'create order'}
+      data: {'title':'create booking'}
     });
 
-    dialogRef.componentInstance.title = "Create order"
+    dialogRef.componentInstance.title = "Create booking"
     dialogRef.componentInstance.date = (arg.date.getMonth()+1)+'/'+arg.date.getDate()+'/'+arg.date.getFullYear()
     dialogRef.componentInstance.isOwner = true;
     dialogRef.componentInstance.createMode = true;
-    dialogRef.componentInstance.orders = this.orders;
+    dialogRef.componentInstance.bookings = this.bookings;
 
     dialogRef.afterClosed()
     .subscribe(data => {
       if(data != undefined){
-        this.orderService.postOrder(data).subscribe(() => {
+        this.bookingService.postBooking(data).subscribe(() => {
           this.resetPage()
         });
       }
@@ -89,46 +89,46 @@ export class CalendarComponent implements OnInit {
     var endTime = arg.event._def.title.slice(6, 11)
     var username = arg.event._def.title.slice(12, arg.event._def.title.length)
 
-    var order = this.orders.find(o => {
-      if(o.username == username && o.startTime == startTime && o.endTime == endTime) return true
+    var booking = this.bookings.find(b => {
+      if(b.username == username && b.startTime == startTime && b.endTime == endTime) return true
       else return false
     })
 
-    if(order != undefined){
-      var date = new Date(order.date)
+    if (booking != undefined){
+      var date = new Date(booking.date)
 
       let dialogRef = this.dialog.open(SelectDateDialogBoxComponent,{
         width: '250px',
-        data: {'title':(order?.username == this.currentUsername ? 'edit order' : 'order info')}
+        data: { 'title': (booking?.username == this.currentUsername ? 'edit booking' : 'booking info')}
       });
 
-      dialogRef.componentInstance.title = (order?.username == this.currentUsername ? 'edit order' : 'order info')
+      dialogRef.componentInstance.title = (booking?.username == this.currentUsername ? 'edit booking' : 'booking info')
       dialogRef.componentInstance.date = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear()
       dialogRef.componentInstance.startTime = startTime;
       dialogRef.componentInstance.endTime = endTime;
-      dialogRef.componentInstance.isOwner = (order?.username == this.currentUsername ? true : false)
+      dialogRef.componentInstance.isOwner = (booking?.username == this.currentUsername ? true : false)
       dialogRef.componentInstance.createMode = false;
-      dialogRef.componentInstance.orders = this.orders;
+      dialogRef.componentInstance.bookings = this.bookings;
 
       dialogRef.afterClosed()
       .subscribe(data => {
         if(data != undefined){
 
           if(data){
-            if(order != undefined){
-              order.startTime = data.startTime;
-              order.endTime = data.endTime;
-              order.date = data.date;
+            if (booking != undefined){
+              booking.startTime = data.startTime;
+              booking.endTime = data.endTime;
+              booking.date = data.date;
 
-              this.orderService.updateOrder(order).subscribe(() => {
+              this.bookingService.updateBooking(booking).subscribe(() => {
                 this.resetPage()
               });
             
             }
           }
           else {
-            if(order != undefined){
-              this.orderService.deleteOrder(order.id).subscribe(() => {
+            if (booking != undefined){
+              this.bookingService.deleteBooking(booking.id).subscribe(() => {
                 this.resetPage();
               });
             }
@@ -139,11 +139,11 @@ export class CalendarComponent implements OnInit {
   }
 
   setEvents(){
-    this.orders.forEach(order => {
-      var date = new Date(order.date)
+    this.bookings.forEach(booking => {
+      var date = new Date(booking.date)
 
       var event = {
-        title: order.startTime+'-'+order.endTime + ' ' + order.username,
+        title: booking.startTime + '-' + booking.endTime + ' ' + booking.username,
         date: date.getFullYear()+'-'
           + ((date.getMonth()+1).toString().length == 1 ? '0' + (date.getMonth()+1) : date.getMonth()+1) +'-'
           + ((date.getDate()).toString().length == 1 ? '0' + (date.getDate()) : date.getDate())

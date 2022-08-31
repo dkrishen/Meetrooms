@@ -1,6 +1,6 @@
 import { Guid } from 'guid-typescript';
 
-export class Order {
+export class Booking {
     id: Guid;
     meetingRoomId: Guid;
     meetingRoomName: string;

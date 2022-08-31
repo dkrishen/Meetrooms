@@ -1,37 +1,37 @@
 <mat-card>
-    <span>all orders</span>
-    <mat-table [dataSource]="orders">
+  <span>all bookings</span>
+    <mat-table [dataSource]="bookings">
         <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef> orderId </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.id}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef> bookingId </mat-header-cell>
+          <mat-cell *matCellDef="let booking"> {{booking.id}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="meetingRoomId">
             <mat-header-cell *matHeaderCellDef> meetingRoomId </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.meetingRoomId}} </mat-cell>
+            <mat-cell *matCellDef="let booking"> {{booking.meetingRoomId}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="userId">
             <mat-header-cell *matHeaderCellDef> userId </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.userId}} </mat-cell>
+            <mat-cell *matCellDef="let booking"> {{booking.userId}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="meetingRoomName">
             <mat-header-cell *matHeaderCellDef> meetingRoomName </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.meetingRoomName}} </mat-cell>
+            <mat-cell *matCellDef="let booking"> {{booking.meetingRoomName}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="username">
             <mat-header-cell *matHeaderCellDef> username </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.username}} </mat-cell>
+            <mat-cell *matCellDef="let booking"> {{booking.username}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="date">
             <mat-header-cell *matHeaderCellDef> date </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.date | date:"dd/MM/yyyy"}} </mat-cell>
+            <mat-cell *matCellDef="let booking"> {{booking.date | date:"dd/MM/yyyy"}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="startTime">
             <mat-header-cell *matHeaderCellDef> startTime </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.startTime}} </mat-cell>
+            <mat-cell *matCellDef="let booking"> {{booking.startTime}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="endTime">
             <mat-header-cell *matHeaderCellDef> endTime </mat-header-cell>
-            <mat-cell *matCellDef="let order"> {{order.endTime}} </mat-cell>
+            <mat-cell *matCellDef="let booking"> {{booking.endTime}} </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: columns;"></mat-row>

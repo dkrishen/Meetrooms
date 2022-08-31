@@ -1,4 +1,4 @@
-export class InputOrderFormDto {
+export class InputBookingFormDto {
     username?: string;
     startTime?: string;
     endTime?: string;

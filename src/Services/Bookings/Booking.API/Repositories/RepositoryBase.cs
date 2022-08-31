@@ -4,8 +4,8 @@ namespace MRA.Bookings.Repositories
 {
     public class RepositoryBase
     {
-        protected MRABooksDbContext context;
-        public RepositoryBase(MRABooksDbContext context)
+        protected MRABookingsDbContext context;
+        public RepositoryBase(MRABookingsDbContext context)
             => this.context = context;
     }
 }

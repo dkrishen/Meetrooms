@@ -20,7 +20,7 @@ namespace MRA.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(OrderMapperProfile));
+            services.AddAutoMapper(typeof(BookingMapperProfile));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -56,7 +56,7 @@ namespace MRA.Gateway
 
             services.AddTransient<IMeetingRoomRepository, MeetingRoomRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IBookingRepository, BookingRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

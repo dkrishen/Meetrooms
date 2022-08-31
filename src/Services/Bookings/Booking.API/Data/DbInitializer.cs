@@ -2,7 +2,7 @@
 {
     public class DbInitializer
     {
-        public static void Initialize(MRABooksDbContext context)
+        public static void Initialize(MRABookingsDbContext context)
         {
             context.Database.EnsureCreated();
         }

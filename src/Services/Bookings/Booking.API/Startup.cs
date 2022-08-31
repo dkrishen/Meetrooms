@@ -40,12 +40,12 @@ namespace MRA.Bookings
                     };
                 });
 
-            services.AddDbContext<MRABooksDbContext>(options =>
+            services.AddDbContext<MRABookingsDbContext>(options =>
                 options.UseMySql(
                     Configuration["Data:Database:ConnectionString"],
                     new MySqlServerVersion(new Version(8, 0, 30))
                     ));
-            services.AddTransient<IBookRepository, BookRepository>();
+            services.AddTransient<IBookingRepository, BookingRepository>();
 
             services.AddCors(options =>
             {
@@ -60,7 +60,7 @@ namespace MRA.Bookings
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookingApi", Version = "v1" });
             });
         }
 
@@ -70,7 +70,7 @@ namespace MRA.Bookings
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookingApi v1"));
             }
 
             app.UseHttpsRedirection();

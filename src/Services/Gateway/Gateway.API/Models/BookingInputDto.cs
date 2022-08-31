@@ -2,7 +2,7 @@
 
 namespace MRA.Gateway.Models
 {
-    public class OrderInputDto
+    public class BookingInputDto
     {
         public string Date { get; set; }
         public string StartTime { get; set; }

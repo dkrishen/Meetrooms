@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { HomeComponent } from './components/home/home.component';
-import { OrdersComponent } from './components/orders/orders.component';
+import { BookingsComponent } from './components/bookings/bookings.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -12,7 +12,7 @@ const routes: Routes = [
     component: WrapperComponent,
     children: [
       {path: '', component: HomeComponent},
-      {path: 'orders', component: OrdersComponent, canActivate: [AuthGuard]},
+      { path: 'bookings', component: BookingsComponent, canActivate: [AuthGuard]},
       {path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard]},
     ]
   },

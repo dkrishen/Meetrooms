@@ -5,17 +5,17 @@ using Microsoft.Extensions.Configuration;
 
 namespace MRA.Bookings.Data
 {
-    public partial class MRABooksDbContext : DbContext
+    public partial class MRABookingsDbContext : DbContext
     {
         public IConfiguration Configuration { get; }
 
-        public MRABooksDbContext(DbContextOptions<MRABooksDbContext> options, IConfiguration configuration)
+        public MRABookingsDbContext(DbContextOptions<MRABookingsDbContext> options, IConfiguration configuration)
             : base(options)
         {
             Configuration = configuration;
         }
 
-        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<Booking> Bookings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -30,7 +30,7 @@ namespace MRA.Bookings.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>(entity =>
+            modelBuilder.Entity<Booking>(entity =>
             {
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
