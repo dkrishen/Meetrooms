@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MRA.Users.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
