@@ -1,36 +1,36 @@
 <mat-card>
-  <span>my bookings</span>
+  <span>My Bookings</span>
     <mat-table [dataSource]="bookings">
         <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef> bookingId </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef> Booking Id </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.id}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="meetingRoomId">
-            <mat-header-cell *matHeaderCellDef> meetingRoomId </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Meeting Room Id </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.meetingRoomId}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="userId">
-            <mat-header-cell *matHeaderCellDef> userId </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> User Id </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.userId}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="meetingRoomName">
-            <mat-header-cell *matHeaderCellDef> meetingRoomName </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Meetroom Name </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.meetingRoomName}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="username">
-            <mat-header-cell *matHeaderCellDef> username </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.username}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="date">
-            <mat-header-cell *matHeaderCellDef> date </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.date | date:"dd/MM/yyyy"}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="startTime">
-            <mat-header-cell *matHeaderCellDef> startTime </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Start Time </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.startTime}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="endTime">
-            <mat-header-cell *matHeaderCellDef> endTime </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> End Time </mat-header-cell>
             <mat-cell *matCellDef="let booking"> {{booking.endTime}} </mat-cell>
         </ng-container>
 
