@@ -4,6 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<UserSecretsId>ad8f5271-80a8-4732-b91d-255c3a78279f</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..\..</DockerfileContext>
 	</PropertyGroup>
 
 	<ItemGroup>

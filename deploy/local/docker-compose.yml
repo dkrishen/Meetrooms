@@ -1,0 +1,138 @@
+version: '3'
+volumes:
+  identity_data:
+    external: true
+  book_data:
+    external: true
+  room_data:
+    external: true
+services:
+  bookdbserver:
+    image: mysql:8.0.30
+    container_name: booksdbserver
+    command:
+      --innodb_buffer_pool_size=5M 
+      --innodb_log_buffer_size=256K
+      --max_connections=10 
+      --key_buffer_size=8 
+      --thread_cache_size=0 
+      --host_cache_size=0 
+      --innodb_ft_cache_size=1600000 
+      --innodb_ft_total_cache_size=32000000 
+      --thread_stack=131072 
+      --sort_buffer_size=32K 
+      --read_buffer_size=8200 
+      --read_rnd_buffer_size=8200 
+      --max_heap_table_size=16K 
+      --tmp_table_size=1K 
+      --bulk_insert_buffer_size=0 
+      --join_buffer_size=128 
+      --net_buffer_length=1K 
+      --innodb_sort_buffer_size=64K 
+      --binlog_cache_size=4K 
+      --binlog_stmt_cache_size=4K 
+      --performance_schema=off
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysq1DbP@ss
+      - MYSQL_DATABASE=mra.booksdb
+    ports:
+      - 5210:3306
+    volumes:
+      - book_data:/MRA/bookdb
+  roomdbserver:
+    image: mysql:8.0.30
+    container_name: roomsdbserver
+    command: 
+      --innodb_buffer_pool_size=5M 
+      --innodb_log_buffer_size=256K
+      --max_connections=10 
+      --key_buffer_size=8 
+      --thread_cache_size=0 
+      --host_cache_size=0 
+      --innodb_ft_cache_size=1600000 
+      --innodb_ft_total_cache_size=32000000 
+      --thread_stack=131072 
+      --sort_buffer_size=32K 
+      --read_buffer_size=8200 
+      --read_rnd_buffer_size=8200 
+      --max_heap_table_size=16K 
+      --tmp_table_size=1K 
+      --bulk_insert_buffer_size=0 
+      --join_buffer_size=128 
+      --net_buffer_length=1K 
+      --innodb_sort_buffer_size=64K 
+      --binlog_cache_size=4K 
+      --binlog_stmt_cache_size=4K 
+      --performance_schema=off
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysq1DbP@ss
+      - MYSQL_DATABASE=mra.roomsdb
+    ports:
+      - 5310:3306
+    volumes:
+      - room_data:/var/lib/mysql
+  identitydbserver:
+    image: mysql:8.0.30
+    container_name: identitydbserver
+    command: 
+      --innodb_buffer_pool_size=5M 
+      --innodb_log_buffer_size=256K
+      --max_connections=10 
+      --key_buffer_size=8 
+      --thread_cache_size=0 
+      --host_cache_size=0 
+      --innodb_ft_cache_size=1600000 
+      --innodb_ft_total_cache_size=32000000 
+      --thread_stack=131072 
+      --sort_buffer_size=32K 
+      --read_buffer_size=8200 
+      --read_rnd_buffer_size=8200 
+      --max_heap_table_size=16K 
+      --tmp_table_size=1K 
+      --bulk_insert_buffer_size=0 
+      --join_buffer_size=128 
+      --net_buffer_length=1K 
+      --innodb_sort_buffer_size=64K 
+      --binlog_cache_size=4K 
+      --binlog_stmt_cache_size=4K 
+      --performance_schema=off
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysq1DbP@ss
+      - MYSQL_DATABASE=mra.identitydb
+    ports:
+      - 5010:3306
+    volumes:
+      - identity_data:/var/lib/mysql
+  gateway:
+    build: ../../src/Services/Gateway
+    container_name: gateway
+    ports:
+      - 5100:80
+  identity:
+    build: ../../src/Services/Identity
+    container_name: identity
+    ports:
+      - 5000:80
+    depends_on:
+      - identitydbserver
+  user:
+    build: ../../src/Services/Users
+    container_name: users
+    ports:
+      - 5020:80
+    depends_on:
+      - identitydbserver
+  book:
+    build: ../../src/Services/Bookings
+    container_name: books
+    ports:
+      - 5200:80
+    depends_on:
+      - bookdbserver
+  room:
+    build: ../../src/Services/Rooms
+    container_name: rooms
+    ports:
+      - 5300:80
+    depends_on:
+        - roomdbserver

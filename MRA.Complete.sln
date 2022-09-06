@@ -10,14 +10,29 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{40886AA2-5A19-46F9-B21A-EBD99230259B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bookings", "Bookings", "{4C248DF4-3172-4CAF-A6C7-230ED88617EB}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Bookings\Dockerfile = src\Services\Bookings\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{A45CEC2B-F3FB-4014-84C1-914B503DD214}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Gateway\Dockerfile = src\Services\Gateway\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{638AFD1E-C944-4394-863A-F93AED510F4B}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Identity\Dockerfile = src\Services\Identity\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rooms", "Rooms", "{41B79969-065A-4A18-B686-9FBC1F4DB979}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Rooms\Dockerfile = src\Services\Rooms\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{DE7FD5D7-5BCF-4245-8E95-22F766A5DC49}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Users\Dockerfile = src\Services\Users\Dockerfile
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Booking.API", "src\Services\Bookings\Booking.API\Booking.API.csproj", "{B11D98EE-11BE-489E-AFBA-318329BAF364}"
 EndProject
