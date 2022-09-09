@@ -42,8 +42,12 @@ namespace MRA.Rooms
             services.AddDbContext<MRARoomsDBContext>(options =>
                 options.UseMySql(
                     Configuration["Data:Database:ConnectionString"],
-                    new MySqlServerVersion(new Version(8, 0, 30))
-                    ));
+                    ServerVersion.AutoDetect(Configuration["Data:Database:ConnectionString"])
+                    //options => options.EnableRetryOnFailure(
+                    //    maxRetryCount: 5,
+                    //    maxRetryDelay: System.TimeSpan.FromSeconds(30),
+                    //    errorNumbersToAdd: null)
+                ));
             services.AddTransient<IRoomRepository, RoomRepository>();
 
             services.AddControllers();

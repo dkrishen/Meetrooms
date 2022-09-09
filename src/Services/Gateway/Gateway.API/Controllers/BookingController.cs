@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Hosting.Infrastructure;
 
 namespace MRA.Gateway.Controllers
 {
@@ -59,7 +61,7 @@ namespace MRA.Gateway.Controllers
 
         [HttpGet]
         [Route("GetBookingsByUser")]
-        public IActionResult GetBooksByUser()
+        public IActionResult GetBookingsByUser()
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);

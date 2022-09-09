@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local", "local", "{FD3999B5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "raspberry", "raspberry", "{1EE376E7-4366-4265-BEE0-A5DF31B616A5}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "deploy\local\docker-compose.dcproj", "{1DC3729E-0E40-491B-B76B-8413EFF5E526}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{40026E43-CB8A-4B0C-A727-A997C81BF2B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40026E43-CB8A-4B0C-A727-A997C81BF2B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40026E43-CB8A-4B0C-A727-A997C81BF2B8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1DC3729E-0E40-491B-B76B-8413EFF5E526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC3729E-0E40-491B-B76B-8413EFF5E526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC3729E-0E40-491B-B76B-8413EFF5E526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC3729E-0E40-491B-B76B-8413EFF5E526}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{40026E43-CB8A-4B0C-A727-A997C81BF2B8} = {976A9DE6-7667-4483-AD68-3B730762F1BC}
 		{FD3999B5-9E28-4433-B990-D831D80B426A} = {3CFB4F39-F17F-4B7A-872A-44472BA98933}
 		{1EE376E7-4366-4265-BEE0-A5DF31B616A5} = {3CFB4F39-F17F-4B7A-872A-44472BA98933}
+		{1DC3729E-0E40-491B-B76B-8413EFF5E526} = {FD3999B5-9E28-4433-B990-D831D80B426A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5826C414-8D8C-4EEC-B420-586183C030E5}

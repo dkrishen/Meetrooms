@@ -1,15 +1,17 @@
-version: '3'
+version: '3.4'
+
 volumes:
   identity_data:
     external: true
-  book_data:
+  booking_data:
     external: true
   room_data:
     external: true
+
 services:
-  bookdbserver:
+  bookingdbserver:
     image: mysql:8.0.30
-    container_name: booksdbserver
+    container_name: bookingsdbserver
     command:
       --innodb_buffer_pool_size=5M 
       --innodb_log_buffer_size=256K
@@ -34,11 +36,11 @@ services:
       --performance_schema=off
     environment:
       - MYSQL_ROOT_PASSWORD=mysq1DbP@ss
-      - MYSQL_DATABASE=mra.booksdb
+      - MYSQL_DATABASE=mra.bookingsdb
     ports:
       - 5210:3306
     volumes:
-      - book_data:/MRA/bookdb
+      - booking_data:/MRA/bookingdb
   roomdbserver:
     image: mysql:8.0.30
     container_name: roomsdbserver
@@ -103,36 +105,53 @@ services:
       - 5010:3306
     volumes:
       - identity_data:/var/lib/mysql
-  gateway:
-    build: ../../src/Services/Gateway
-    container_name: gateway
-    ports:
-      - 5100:80
-  identity:
-    build: ../../src/Services/Identity
-    container_name: identity
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: ../../src/Services/Identity/Identity.API/Dockerfile
     ports:
       - 5000:80
     depends_on:
       - identitydbserver
-  user:
-    build: ../../src/Services/Users
-    container_name: users
+  gateway.api:
+    image: ${DOCKER_REGISTRY-}gatewayapi
+    build:
+      context: .
+      dockerfile: ../../src/Services/Gateway/Gateway.API/Dockerfile
+    ports:
+      - 5100:80
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: ../../src/Services/Users/User.API/Dockerfile
     ports:
       - 5020:80
     depends_on:
       - identitydbserver
-  book:
-    build: ../../src/Services/Bookings
-    container_name: books
-    ports:
-      - 5200:80
-    depends_on:
-      - bookdbserver
-  room:
-    build: ../../src/Services/Rooms
-    container_name: rooms
+  room.api:
+    image: ${DOCKER_REGISTRY-}roomapi
+    build:
+      context: .
+      dockerfile: ../../src/Services/Rooms/Room.API/Dockerfile
     ports:
       - 5300:80
     depends_on:
         - roomdbserver
+  booking.api:
+    image: ${DOCKER_REGISTRY-}bookingapi
+    build:
+      context: .
+      dockerfile: ../../src/Services/Bookings/Booking.API/Dockerfile
+    ports:
+      - 5200:80
+    depends_on:
+      - bookingdbserver
+  #angular.spa:
+  #  image: ${DOCKER_REGISTRY-}angularspa
+  #  build:
+  #    context: .
+  #    dockerfile: ../../src/Clients/Angular.SPA/Dockerfile
+  #  ports:
+  #    - 4200:80

@@ -26,7 +26,7 @@ namespace MRA.Identity
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
-                new ApiResource("MRAApi", "MRA.API",
+                new ApiResource("MRAGateway", "MRA.GATEWAY",
                     new [] { JwtClaimTypes.Name })
                 {
                     Scopes =

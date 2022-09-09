@@ -25,7 +25,7 @@ namespace MRA.Bookings.Controllers
 
         [HttpGet]
         [Route("GetAllBookings")]
-        public IActionResult GetBooks()
+        public IActionResult GetBookings()
         {
             var bookings = _bookingRepository.GetBookings();
             var response = JsonConvert.SerializeObject(bookings);
