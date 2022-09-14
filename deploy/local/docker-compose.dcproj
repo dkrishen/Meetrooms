@@ -4,12 +4,12 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>1dc3729e-0e40-491b-b76b-8413eff5e526</ProjectGuid>
-    <!--<DockerLaunchAction>LaunchBrowser</DockerLaunchAction>-->
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <!--<DockerServiceName>user.api</DockerServiceName>-->
+    <DockerServiceName>angular.spa</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose.override.yml">
+    <None Include="docker-compose.Production.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />

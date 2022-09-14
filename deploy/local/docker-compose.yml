@@ -40,7 +40,8 @@ services:
     ports:
       - 5210:3306
     volumes:
-      - booking_data:/MRA/bookingdb
+      - booking_data:/var/lib/mysql
+
   roomdbserver:
     image: mysql:8.0.30
     container_name: roomsdbserver
@@ -73,6 +74,7 @@ services:
       - 5310:3306
     volumes:
       - room_data:/var/lib/mysql
+
   identitydbserver:
     image: mysql:8.0.30
     container_name: identitydbserver
@@ -105,53 +107,63 @@ services:
       - 5010:3306
     volumes:
       - identity_data:/var/lib/mysql
+
   identity.api:
+    container_name: identity
     image: ${DOCKER_REGISTRY-}identityapi
-    build:
-      context: .
-      dockerfile: ../../src/Services/Identity/Identity.API/Dockerfile
+    build: ../../src/Services/Identity/Identity.API
     ports:
       - 5000:80
     depends_on:
       - identitydbserver
+
   gateway.api:
+    container_name: gateway
     image: ${DOCKER_REGISTRY-}gatewayapi
-    build:
-      context: .
-      dockerfile: ../../src/Services/Gateway/Gateway.API/Dockerfile
+    build: ../../src/Services/Gateway/Gateway.API
     ports:
       - 5100:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+
   user.api:
+    container_name: users
     image: ${DOCKER_REGISTRY-}userapi
-    build:
-      context: .
-      dockerfile: ../../src/Services/Users/User.API/Dockerfile
+    build: ../../src/Services/Users/User.API
     ports:
       - 5020:80
     depends_on:
       - identitydbserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+
   room.api:
+    container_name: rooms
     image: ${DOCKER_REGISTRY-}roomapi
-    build:
-      context: .
-      dockerfile: ../../src/Services/Rooms/Room.API/Dockerfile
+    build: ../../src/Services/Rooms/Room.API
     ports:
       - 5300:80
     depends_on:
         - roomdbserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+
   booking.api:
+    container_name: bookings
     image: ${DOCKER_REGISTRY-}bookingapi
-    build:
-      context: .
-      dockerfile: ../../src/Services/Bookings/Booking.API/Dockerfile
+    build: ../../src/Services/Bookings/Booking.API
     ports:
       - 5200:80
     depends_on:
       - bookingdbserver
-  #angular.spa:
-  #  image: ${DOCKER_REGISTRY-}angularspa
-  #  build:
-  #    context: .
-  #    dockerfile: ../../src/Clients/Angular.SPA/Dockerfile
-  #  ports:
-  #    - 4200:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+
+  angular.spa:
+    container_name: spa
+    image: ${DOCKER_REGISTRY-}angularspa
+    build: ../../src/Clients/Angular.SPA
+    ports:
+      - 4200:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker

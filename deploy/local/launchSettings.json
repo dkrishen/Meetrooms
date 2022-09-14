@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "angular.spa": "StartWithoutDebugging",
+        "booking.api": "StartDebugging",
+        "bookingdbserver": "StartWithoutDebugging",
+        "gateway.api": "StartDebugging",
+        "identity.api": "StartDebugging",
+        "identitydbserver": "StartWithoutDebugging",
+        "room.api": "StartDebugging",
+        "roomdbserver": "StartWithoutDebugging",
+        "user.api": "StartDebugging"
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  bookingdbserver:
+    volumes:
+      - booking_data:/MRA/bookingdb
+
+  roomdbserver:
+    volumes:
+      - room_data:/MRA/roomdb
+
+  identitydbserver:
+    volumes:
+      - identity_data:/MRA/identitydb
+
+  user.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  room.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  gateway.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  booking.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production

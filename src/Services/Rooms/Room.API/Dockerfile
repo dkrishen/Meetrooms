@@ -6,10 +6,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Services/Rooms/Room.API/Room.API.csproj", "src/Services/Rooms/Room.API/"]
-RUN dotnet restore "src/Services/Rooms/Room.API/Room.API.csproj"
+COPY ["./Room.API.csproj", "."]
+RUN dotnet restore "Room.API.csproj"
 COPY . .
-WORKDIR "/src/src/Services/Rooms/Room.API"
+WORKDIR "/src"
 RUN dotnet build "Room.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

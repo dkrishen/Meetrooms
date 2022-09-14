@@ -31,4 +31,12 @@
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="appsettings.Docker.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>
