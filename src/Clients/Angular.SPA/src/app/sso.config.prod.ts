@@ -1,7 +1,7 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
 
 export const authConfig: AuthConfig = {
-  issuer: 'http://meetroom.ddns.net:5000',
+  issuer: 'http://94.158.219.173:5000',
   redirectUri: window.location.origin + '/',
   clientId: 'MRAAngular',
   dummyClientSecret: 'AngularSecret',

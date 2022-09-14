@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  authApi: 'http://meetroom.ddns.net:5000/',
-  backApi: 'http://gateway/',
-  tokenWhiteListedDomains: ['meetroom.ddns.net:5000', 'gateway']
+  authApi: 'http://94.158.219.173:5000/',
+  backApi: 'http://94.158.219.173:5100/',
+  tokenWhiteListedDomains: ['94.158.219.173:5000', '94.158.219.173:5100']
 };

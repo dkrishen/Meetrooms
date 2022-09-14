@@ -90,8 +90,8 @@ namespace MRA.Identity
                     ClientSecrets = new List<Secret> {new Secret("AngularSecret".Sha256())},
 
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string> {"http://localhost:4200/"},
-                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200/" },
+                    RedirectUris = new List<string> {"http://94.158.219.173:4200/"},
+                    PostLogoutRedirectUris = new List<string> { "http://94.158.219.173:4200/" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -102,7 +102,7 @@ namespace MRA.Identity
                     },
                     RequirePkce = true,
                     AllowPlainTextPkce = false,
-                    AllowedCorsOrigins = {"http://localhost:4200"},
+                    AllowedCorsOrigins = {"http://94.158.219.173:4200"},
                 },
             };
     }
