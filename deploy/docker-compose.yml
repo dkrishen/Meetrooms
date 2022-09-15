@@ -111,7 +111,7 @@ services:
   identity.api:
     container_name: identity
     image: ${DOCKER_REGISTRY-}identityapi
-    build: ../../src/Services/Identity/Identity.API
+    build: ../src/Services/Identity/Identity.API
     ports:
       - 5000:80
     depends_on:
@@ -120,7 +120,7 @@ services:
   gateway.api:
     container_name: gateway
     image: ${DOCKER_REGISTRY-}gatewayapi
-    build: ../../src/Services/Gateway/Gateway.API
+    build: ../src/Services/Gateway/Gateway.API
     ports:
       - 5100:80
     environment:
@@ -129,7 +129,7 @@ services:
   user.api:
     container_name: users
     image: ${DOCKER_REGISTRY-}userapi
-    build: ../../src/Services/Users/User.API
+    build: ../src/Services/Users/User.API
     ports:
       - 5020:80
     depends_on:
@@ -140,7 +140,7 @@ services:
   room.api:
     container_name: rooms
     image: ${DOCKER_REGISTRY-}roomapi
-    build: ../../src/Services/Rooms/Room.API
+    build: ../src/Services/Rooms/Room.API
     ports:
       - 5300:80
     depends_on:
@@ -151,7 +151,7 @@ services:
   booking.api:
     container_name: bookings
     image: ${DOCKER_REGISTRY-}bookingapi
-    build: ../../src/Services/Bookings/Booking.API
+    build: ../src/Services/Bookings/Booking.API
     ports:
       - 5200:80
     depends_on:
@@ -162,7 +162,7 @@ services:
   angular.spa:
     container_name: spa
     image: ${DOCKER_REGISTRY-}angularspa
-    build: ../../src/Clients/Angular.SPA
+    build: ../src/Clients/Angular.SPA
     ports:
       - 4200:80
     environment:
