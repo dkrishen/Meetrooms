@@ -116,6 +116,8 @@ services:
       - 5000:80
     depends_on:
       - identitydbserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
 
   gateway.api:
     container_name: gateway

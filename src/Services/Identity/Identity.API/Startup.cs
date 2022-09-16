@@ -26,6 +26,7 @@ namespace MRA.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = AppConfiguration.GetValue<string>("ConnectionString");
+            Configuration identityConfiguration = new Configuration(AppConfiguration);
 
             services.AddDbContext<AuthDbContext>(options =>
             {
@@ -46,10 +47,10 @@ namespace MRA.Identity
 
             services.AddIdentityServer()
                 .AddAspNetIdentity<AppUser>()
-                .AddInMemoryApiResources(Configuration.ApiResources)
-                .AddInMemoryIdentityResources(Configuration.IdentityResources)
-                .AddInMemoryApiScopes(Configuration.ApiScopes)
-                .AddInMemoryClients(Configuration.clients)
+                .AddInMemoryApiResources(identityConfiguration.ApiResources)
+                .AddInMemoryIdentityResources(identityConfiguration.IdentityResources)
+                .AddInMemoryApiScopes(identityConfiguration.ApiScopes)
+                .AddInMemoryClients(identityConfiguration.clients)
                 .AddDeveloperSigningCredential();
 
             services.ConfigureApplicationCookie(config =>

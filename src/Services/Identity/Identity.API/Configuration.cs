@@ -1,13 +1,23 @@
 ﻿using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MRA.Identity
 {
     public class Configuration
     {
-        public static IEnumerable<ApiScope> ApiScopes =>
+        public IConfiguration AppSettings { get; }
+
+        public Configuration(IConfiguration appSettings)
+        {
+            AppSettings = appSettings;
+        }
+
+        public IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
                 new ApiScope("my_scope"),
@@ -15,7 +25,7 @@ namespace MRA.Identity
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
             };
 
-        public static IEnumerable<IdentityResource> IdentityResources =>
+        public IEnumerable<IdentityResource> IdentityResources =>
             new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
@@ -23,7 +33,7 @@ namespace MRA.Identity
                 new IdentityResources.Email(),
             };
 
-        public static IEnumerable<ApiResource> ApiResources =>
+        public IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
                 new ApiResource("MRAGateway", "MRA.GATEWAY",
@@ -61,7 +71,7 @@ namespace MRA.Identity
                 new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
             };
 
-        public static IEnumerable<Client> clients =>
+        public IEnumerable<Client> clients =>
             new List<Client>
             {
                 new Client
@@ -90,8 +100,8 @@ namespace MRA.Identity
                     ClientSecrets = new List<Secret> {new Secret("AngularSecret".Sha256())},
 
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string> {"http://94.158.219.173:4200/"},
-                    PostLogoutRedirectUris = new List<string> { "http://94.158.219.173:4200/" },
+                    RedirectUris = new List<string> {AppSettings.GetValue<string>("AngularUrl") + "/" },
+                    PostLogoutRedirectUris = new List<string> { AppSettings.GetValue<string>("AngularUrl") + "/" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -102,7 +112,7 @@ namespace MRA.Identity
                     },
                     RequirePkce = true,
                     AllowPlainTextPkce = false,
-                    AllowedCorsOrigins = {"http://94.158.219.173:4200"},
+                    AllowedCorsOrigins = { AppSettings.GetValue<string>("AngularUrl")},
                 },
             };
     }
