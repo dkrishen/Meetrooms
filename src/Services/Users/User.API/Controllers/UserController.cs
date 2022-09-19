@@ -24,14 +24,14 @@ namespace MRA.Users.Controllers
         public IActionResult GetUserInfo(string data)
         {
             var userIds = JsonConvert.DeserializeObject<IEnumerable<string>>(data ?? "[]");
-            return Ok(JsonConvert.SerializeObject(_userRepository.GetUsersByIds(userIds)));
+            return Ok(_userRepository.GetUsersByIds(userIds));
         }
 
         [HttpGet]
         [Route("GetAllUserNames")]
         public IActionResult GetAllUserNames()
         {
-            return Ok(JsonConvert.SerializeObject(_userRepository.GetAllUserNames()));
+            return Ok(_userRepository.GetAllUserNames());
         }
     }
 }

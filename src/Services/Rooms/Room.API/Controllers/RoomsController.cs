@@ -21,7 +21,7 @@ namespace MRA.Rooms.Controllers
         [Route("GetAllRooms")]
         public IActionResult GetAllRooms()
         {
-            return Ok(JsonConvert.SerializeObject(roomRepository.GetRooms()));
+            return Ok(roomRepository.GetRooms());
         }
 
         [HttpGet]
@@ -29,7 +29,7 @@ namespace MRA.Rooms.Controllers
         public IActionResult GetRoomById(string data)
         {
             Guid roomId = JsonConvert.DeserializeObject<Guid>(data);
-            return Ok(JsonConvert.SerializeObject(roomRepository.GetRoomById(roomId)));
+            return Ok(roomRepository.GetRoomById(roomId));
         }
 
         [HttpGet]
@@ -37,7 +37,7 @@ namespace MRA.Rooms.Controllers
         public IActionResult GetRoomsByIds(string data)
         {
             var roomIds = JsonConvert.DeserializeObject<IEnumerable<Guid>>(data);
-            return Ok(JsonConvert.SerializeObject(roomRepository.GetRoomsByIds(roomIds)));
+            return Ok(roomRepository.GetRoomsByIds(roomIds));
         }
     }
 }

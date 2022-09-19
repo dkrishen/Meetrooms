@@ -92,11 +92,12 @@ namespace MRA.Gateway.Controllers
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
             
             var newBooking = _mapper.Map<Booking>(booking);
-            newBooking.MeetingRoomId = new Guid("1DDA7260-08E8-4B32-A9EE-F7E1CA69BC9C");  // temporary GUID the single meeting room (have not ability for select rooms at the moment)
+            // temporary GUID the single meeting room (have not ability for select rooms at the moment)
+            newBooking.MeetingRoomId = new Guid("1DDA7260-08E8-4B32-A9EE-F7E1CA69BC9C");  
             newBooking.UserId = userId;
 
-            _bookingRepository.AddBooking(newBooking, authorizationHeaderValue);
-            return Ok();
+            bool result = _bookingRepository.AddBooking(newBooking, authorizationHeaderValue);
+            return Ok(result);
         }
 
         [HttpDelete]
@@ -104,8 +105,8 @@ namespace MRA.Gateway.Controllers
         public IActionResult DeleteBooking([FromBody] GuidDto data)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            _bookingRepository.DeleteBooking(data.id, authorizationHeaderValue);
-            return Ok();
+            bool result = _bookingRepository.DeleteBooking(data.id, authorizationHeaderValue);
+            return Ok(result);
         }
 
         [HttpPut]
@@ -113,8 +114,8 @@ namespace MRA.Gateway.Controllers
         public IActionResult UpdateBooking([FromBody] BookingEditDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            _bookingRepository.UpdateBooking(_mapper.Map<Booking>(booking), authorizationHeaderValue);
-            return Ok();
+            bool result = _bookingRepository.UpdateBooking(_mapper.Map<Booking>(booking), authorizationHeaderValue);
+            return Ok(result);
         }
     }
 }

@@ -28,8 +28,7 @@ namespace MRA.Bookings.Controllers
         public IActionResult GetBookings()
         {
             var bookings = _bookingRepository.GetBookings();
-            var response = JsonConvert.SerializeObject(bookings);
-            return Ok(response);
+            return Ok(bookings);
         }
 
         [HttpGet]
@@ -37,37 +36,34 @@ namespace MRA.Bookings.Controllers
         public IActionResult GetBookingsByUserId(string data)
         {
             Guid userId = JsonConvert.DeserializeObject<Guid>(data);
-            return Ok(JsonConvert.SerializeObject(_bookingRepository.GetBookingsByUser(userId)));
+            return Ok(_bookingRepository.GetBookingsByUser(userId));
         }
 
         [HttpPost]
         [Route("AddBooking")]
-        public IActionResult AddBooking(string data)
+        public IActionResult AddBooking([FromBody] Booking data)
         {
-            Booking booking = JsonConvert.DeserializeObject<Booking>(data);
-            _bookingRepository.AddBooking(booking);
+            _bookingRepository.AddBooking(data);
 
-            return Ok();
+            return Ok(true);
         }
 
         [HttpDelete]
         [Route("deleteBooking")]
-        public IActionResult DeleteBooking(string data)
+        public IActionResult DeleteBooking([FromBody] Guid data)
         {
-            Guid bookingId = JsonConvert.DeserializeObject<Guid>(data);
-            _bookingRepository.DeleteBooking(bookingId);
+           _bookingRepository.DeleteBooking(data);
 
-            return Ok();
+            return Ok(true);
         }
 
         [HttpPut]
         [Route("updateBooking")]
-        public IActionResult UpdateBooking(string data)
+        public IActionResult UpdateBooking([FromBody] Booking data)
         {
-            Booking booking = JsonConvert.DeserializeObject<Booking>(data);
-            _bookingRepository.UpdateBooking(booking);
+            _bookingRepository.UpdateBooking(data);
 
-            return Ok();
+            return Ok(true);
         }
     }
 }

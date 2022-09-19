@@ -8,35 +8,34 @@ namespace MRA.Gateway.Repository
 {
     public class BookingRepository : RepositoryBase , IBookingRepository
     {
-        public BookingRepository(IConfiguration configuration) : base(configuration.GetSection("MRA.Bookings").GetValue<string>("Url"))
+        public BookingRepository(IConfiguration configuration) 
+            : base(configuration.GetSection("MRA.Bookings").GetValue<string>("Url"))
         {
         }
 
-        public void AddBooking(Booking booking, string token)
+        public bool AddBooking(Booking booking, string token)
         {
-            Request("api/Booking/AddBooking?data=", "POST", booking, token);
+            return Request.Post.Send("api/Booking/AddBooking", token, booking);
         }
 
-        public void DeleteBooking(Guid id, string token)
+        public bool DeleteBooking(Guid id, string token)
         {
-            Request("api/Booking/DeleteBooking?data=", "DELETE", id, token);
+            return Request.Delete.Send("api/Booking/DeleteBooking", token, id);
         }
 
         public IEnumerable<Booking> GetBookings(string token)
         {
-            var jsonResponse = Request("api/Booking/GetAllBookings", "GET", token: token);
-            return JsonConvert.DeserializeObject<IEnumerable<Booking>>(jsonResponse);
+            return Request.Get.Send<IEnumerable<Booking>>("api/Booking/GetAllBookings", token);
         }
 
         public IEnumerable<Booking> GetBookingsByUser(Guid id, string token)
         {
-            var jsonResponse = Request("api/Booking/GetBookingsByUserId?data=", "GET", id, token);
-            return JsonConvert.DeserializeObject<IEnumerable<Booking>>(jsonResponse);
+            return Request.Get.Send<IEnumerable<Booking>>("api/Booking/GetBookingsByUserId", token, id);
         }
 
-        public void UpdateBooking(Booking booking, string token)
+        public bool UpdateBooking(Booking booking, string token)
         {
-            Request("api/Booking/UpdateBooking?data=", "PUT", booking, token);
+            return Request.Put.Send("api/Booking/UpdateBooking", token, booking);
         }
     }
 }

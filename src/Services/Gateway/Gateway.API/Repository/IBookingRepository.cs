@@ -8,8 +8,8 @@ namespace MRA.Gateway.Repository
     {
         public IEnumerable<Booking> GetBookings(string token);
         public IEnumerable<Booking> GetBookingsByUser(Guid id, string token);
-        public void AddBooking(Booking booking, string token);
-        public void UpdateBooking(Booking booking, string token);
-        public void DeleteBooking(Guid id, string token);
+        public bool AddBooking(Booking booking, string token);
+        public bool UpdateBooking(Booking booking, string token);
+        public bool DeleteBooking(Guid id, string token);
     }
 }
