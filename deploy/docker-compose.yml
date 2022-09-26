@@ -41,6 +41,7 @@ services:
       - 5210:3306
     volumes:
       - booking_data:/var/lib/mysql
+    restart: always
 
   roomdbserver:
     image: mysql:8.0.30
@@ -74,6 +75,7 @@ services:
       - 5310:3306
     volumes:
       - room_data:/var/lib/mysql
+    restart: always
 
   identitydbserver:
     image: mysql:8.0.30
@@ -107,6 +109,7 @@ services:
       - 5010:3306
     volumes:
       - identity_data:/var/lib/mysql
+    restart: always
 
   identity.api:
     container_name: identity
@@ -118,6 +121,7 @@ services:
       - identitydbserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
+    restart: always
 
   gateway.api:
     container_name: gateway
@@ -127,6 +131,7 @@ services:
       - 5100:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
+    restart: always
 
   user.api:
     container_name: users
@@ -138,6 +143,7 @@ services:
       - identitydbserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
+    restart: always
 
   room.api:
     container_name: rooms
@@ -149,6 +155,7 @@ services:
         - roomdbserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
+    restart: always
 
   booking.api:
     container_name: bookings
@@ -160,6 +167,7 @@ services:
       - bookingdbserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
+    restart: always
 
   angular.spa:
     container_name: spa
@@ -169,3 +177,4 @@ services:
       - 4200:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
+    restart: always
