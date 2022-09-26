@@ -1,8 +1,10 @@
-﻿using MRA.Users.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Users.Data;
 using MRA.Users.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MRA.Users.Repositories
 {
@@ -12,14 +14,19 @@ namespace MRA.Users.Repositories
         {
         }
 
-        public IEnumerable<UserShortDto> GetAllUserNames()
+        public async Task<IEnumerable<UserShortDto>> GetAllUserNamesAsync()
         {
-            return context.Users.Select(u => new UserShortDto() { Id = u.Id, Username = u.UserName });
+            return await context.Users
+                .Select(u => new UserShortDto() { Id = u.Id, Username = u.UserName })
+                .ToListAsync().ConfigureAwait(false); ;
         }
 
-        public IEnumerable<UserShortDto> GetUsersByIds(IEnumerable<string> ids)
+        public async Task<IEnumerable<UserShortDto>> GetUsersByIdsAsync(IEnumerable<string> ids)
         {
-            return context.Users.Select(u => new UserShortDto() { Id = u.Id, Username = u.UserName }).Where(u => ids.Contains(u.Id));
+            return await context.Users
+                .Select(u => new UserShortDto() { Id = u.Id, Username = u.UserName })
+                .Where(u => ids.Contains(u.Id))
+                .ToListAsync().ConfigureAwait(false); ;
         }
     }
 }

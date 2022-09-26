@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MRA.Gateway.Repository
 {
@@ -13,29 +14,39 @@ namespace MRA.Gateway.Repository
         {
         }
 
-        public bool AddBooking(Booking booking, string token)
+        public async Task<bool> AddBookingAsync(Booking booking, string token)
         {
-            return Request.Post.Send("api/Booking/AddBooking", token, booking);
+            return await Request.Post
+                .SendAsync("api/Booking/AddBooking", token, booking)
+                .ConfigureAwait(false);
         }
 
-        public bool DeleteBooking(Guid id, string token)
+        public async Task<bool> DeleteBookingAsync(Guid id, string token)
         {
-            return Request.Delete.Send("api/Booking/DeleteBooking", token, id);
+            return await Request.Delete
+                .SendAsync("api/Booking/DeleteBooking", token, id)
+                .ConfigureAwait(false);
         }
 
-        public IEnumerable<Booking> GetBookings(string token)
+        public async Task<IEnumerable<Booking>> GetBookingsAsync(string token)
         {
-            return Request.Get.Send<IEnumerable<Booking>>("api/Booking/GetAllBookings", token);
+            return await Request.Get
+                .SendAsync<IEnumerable<Booking>>("api/Booking/GetAllBookings", token)
+                .ConfigureAwait(false);
         }
 
-        public IEnumerable<Booking> GetBookingsByUser(Guid id, string token)
+        public async Task<IEnumerable<Booking>> GetBookingsByUserAsync(Guid id, string token)
         {
-            return Request.Get.Send<IEnumerable<Booking>>("api/Booking/GetBookingsByUserId", token, id);
+            return await Request.Get
+                .SendAsync<IEnumerable<Booking>>("api/Booking/GetBookingsByUserId", token, id)
+                .ConfigureAwait(false);
         }
 
-        public bool UpdateBooking(Booking booking, string token)
+        public async Task<bool> UpdateBookingAsync(Booking booking, string token)
         {
-            return Request.Put.Send("api/Booking/UpdateBooking", token, booking);
+            return await Request.Put
+                .SendAsync("api/Booking/UpdateBooking", token, booking)
+                .ConfigureAwait(false);
         }
     }
 }

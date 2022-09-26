@@ -4,6 +4,7 @@ using MRA.Users.Repositories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MRA.Users.Controllers
 {
@@ -21,17 +22,17 @@ namespace MRA.Users.Controllers
 
         [HttpGet]
         [Route("GetUserNamesByIds")]
-        public IActionResult GetUserInfo(string data)
+        public async Task<IActionResult> GetUserInfoAsync(string data)
         {
             var userIds = JsonConvert.DeserializeObject<IEnumerable<string>>(data ?? "[]");
-            return Ok(_userRepository.GetUsersByIds(userIds));
+            return Ok(await _userRepository.GetUsersByIdsAsync(userIds));
         }
 
         [HttpGet]
         [Route("GetAllUserNames")]
-        public IActionResult GetAllUserNames()
+        public async Task<IActionResult> GetAllUserNamesAsync()
         {
-            return Ok(_userRepository.GetAllUserNames());
+            return Ok(await _userRepository.GetAllUserNamesAsync());
         }
     }
 }

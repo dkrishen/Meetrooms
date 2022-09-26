@@ -1,8 +1,10 @@
-﻿using MRA.Rooms.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MRA.Rooms.Data;
 using MRA.Rooms.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MRA.Rooms.Repositories
 {
@@ -10,19 +12,23 @@ namespace MRA.Rooms.Repositories
     {
         public RoomRepository(MRARoomsDBContext context) : base(context) { }
 
-        public Room GetRoomById(Guid id)
+        public async Task<Room> GetRoomByIdAsync(Guid id)
         {
-            return context.Rooms.Where(r => r.Id == id).SingleOrDefault();
+            return await context.Rooms
+                .Where(r => r.Id == id)
+                .SingleOrDefaultAsync().ConfigureAwait(false); ;
         }
 
-        public IEnumerable<Room> GetRooms()
+        public async Task<IEnumerable<Room>> GetRoomsAsync()
         {
-            return context.Rooms.ToList();
+            return await context.Rooms.ToListAsync().ConfigureAwait(false); ;
         }
 
-        public IEnumerable<Room> GetRoomsByIds(IEnumerable<Guid> ids)
+        public async Task<IEnumerable<Room>> GetRoomsByIdsAsync(IEnumerable<Guid> ids)
         {
-            return context.Rooms.Where(r => ids.Contains(r.Id)).ToList();
+            return await context.Rooms
+                .Where(r => ids.Contains(r.Id))
+                .ToListAsync().ConfigureAwait(false); ;
         }
     }
 }

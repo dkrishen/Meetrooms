@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Gateway.API.Logic.Request
 {
@@ -12,7 +13,7 @@ namespace Gateway.API.Logic.Request
         {
         }
 
-        public bool Send(string requestUrl, string token = null, object data = null)
+        public async Task<bool> SendAsync(string requestUrl, string token = null, object data = null)
         {
             var request = (HttpWebRequest)WebRequest.Create(baseUrl + requestUrl);
             request.Method = "POST";
@@ -27,7 +28,7 @@ namespace Gateway.API.Logic.Request
                 request.Headers.Add("Authorization: " + token);
             }
 
-            return request.Send().DeserializeJSON<bool>();
+            return (await request.SendAsync()).DeserializeJSON<bool>();
         }
     }
 }

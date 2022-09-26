@@ -1,5 +1,6 @@
 ﻿using Gateway.API.Logic.Extenshions;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Gateway.API.Logic.Request
 {
@@ -9,7 +10,7 @@ namespace Gateway.API.Logic.Request
         {
         }
 
-        public bool Send(string requestUrl, string token = null, object data = null)
+        public async Task<bool> SendAsync(string requestUrl, string token = null, object data = null)
         {
             var request = (HttpWebRequest)WebRequest.Create(baseUrl + requestUrl);
             request.Method = "DELETE";
@@ -24,7 +25,7 @@ namespace Gateway.API.Logic.Request
                 request.Headers.Add("Authorization: " + token);
             }
 
-            return request.Send().DeserializeJSON<bool>();
+            return (await request.SendAsync()).DeserializeJSON<bool>();
         }
     }
 }

@@ -7,8 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Hosting.Infrastructure;
+using System.Threading.Tasks;
 
 namespace MRA.Gateway.Controllers
 {
@@ -36,16 +35,16 @@ namespace MRA.Gateway.Controllers
 
         [HttpGet]
         [Route("GetAllBookings")]
-        public IActionResult GetAllBookings()
+        public async Task<IActionResult> GetAllBookingsAsync()
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            var bookings = _bookingRepository.GetBookings(authorizationHeaderValue).ToList();
+            var bookings = (await _bookingRepository.GetBookingsAsync(authorizationHeaderValue)).ToList();
             
             var roomIds = bookings.Select(o => o.MeetingRoomId).ToHashSet<Guid>();
-            var rooms = _meetingRoomRepository.GetRoomsByRoomIds(roomIds, authorizationHeaderValue);
+            var rooms = (await _meetingRoomRepository.GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue)).ToList();
 
             var userIds = bookings.Select(o => o.UserId).ToHashSet<Guid>();
-            var users = _userRepository.GetUsersByIds(userIds, authorizationHeaderValue).ToList();
+            var users = (await _userRepository.GetUsersByIdsAsync(userIds, authorizationHeaderValue)).ToList();
 
             var result = new List<BookingViewModel>();
             foreach (var booking in bookings)
@@ -61,16 +60,16 @@ namespace MRA.Gateway.Controllers
 
         [HttpGet]
         [Route("GetBookingsByUser")]
-        public IActionResult GetBookingsByUser()
+        public async Task<IActionResult> GetBookingsByUserAsync()
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            var bookings = _bookingRepository.GetBookingsByUser(userId, authorizationHeaderValue);
+            var bookings = (await _bookingRepository.GetBookingsByUserAsync(userId, authorizationHeaderValue)).ToList();
 
             var roomIds = bookings.Select(o => o.MeetingRoomId).ToHashSet<Guid>();
-            var rooms = _meetingRoomRepository.GetRoomsByRoomIds(roomIds, authorizationHeaderValue);
+            var rooms = (await _meetingRoomRepository.GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue)).ToList();
 
-            var user = _userRepository.GetUsersByIds(new HashSet<Guid>() { userId }, authorizationHeaderValue).FirstOrDefault();
+            var user = (await _userRepository.GetUsersByIdsAsync(new HashSet<Guid>() { userId }, authorizationHeaderValue)).FirstOrDefault();
 
             var result = new List<BookingViewModel>();
             foreach (var booking in bookings)
@@ -86,7 +85,7 @@ namespace MRA.Gateway.Controllers
 
         [HttpPost]
         [Route("AddBooking")]
-        public IActionResult AddBooking([FromBody] BookingInputDto booking)
+        public async Task<IActionResult> AddBookingAsync([FromBody] BookingInputDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -96,25 +95,25 @@ namespace MRA.Gateway.Controllers
             newBooking.MeetingRoomId = new Guid("1DDA7260-08E8-4B32-A9EE-F7E1CA69BC9C");  
             newBooking.UserId = userId;
 
-            bool result = _bookingRepository.AddBooking(newBooking, authorizationHeaderValue);
+            bool result = await _bookingRepository.AddBookingAsync(newBooking, authorizationHeaderValue);
             return Ok(result);
         }
 
         [HttpDelete]
         [Route("DeleteBooking")]
-        public IActionResult DeleteBooking([FromBody] GuidDto data)
+        public async Task<IActionResult> DeleteBookingAsync([FromBody] GuidDto data)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            bool result = _bookingRepository.DeleteBooking(data.id, authorizationHeaderValue);
+            bool result = await _bookingRepository.DeleteBookingAsync(data.id, authorizationHeaderValue);
             return Ok(result);
         }
 
         [HttpPut]
         [Route("UpdateBooking")]
-        public IActionResult UpdateBooking([FromBody] BookingEditDto booking)
+        public async Task<IActionResult> UpdateBookingAsync([FromBody] BookingEditDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            bool result = _bookingRepository.UpdateBooking(_mapper.Map<Booking>(booking), authorizationHeaderValue);
+            bool result = await _bookingRepository.UpdateBookingAsync(_mapper.Map<Booking>(booking), authorizationHeaderValue);
             return Ok(result);
         }
     }

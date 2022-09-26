@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Gateway.API.Logic.Request
 {
@@ -11,7 +12,7 @@ namespace Gateway.API.Logic.Request
         {
         }
 
-        public T Send<T>(string requestUrl, string token = null, object data = null)
+        public async Task<T> SendAsync<T>(string requestUrl, string token = null, object data = null)
         {
             HttpWebRequest request;
 
@@ -31,7 +32,7 @@ namespace Gateway.API.Logic.Request
                 request.Headers.Add("Authorization: " + token);
             }
 
-            return request.Send().DeserializeJSON<T>();
+            return (await request.SendAsync()).DeserializeJSON<T>();
         }
 
         private IDictionary<string, string> CreateParameterDictionary(object data)

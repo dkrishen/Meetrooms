@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 namespace MRA.Bookings.Controllers
 {
@@ -25,43 +26,43 @@ namespace MRA.Bookings.Controllers
 
         [HttpGet]
         [Route("GetAllBookings")]
-        public IActionResult GetBookings()
+        public async Task<IActionResult> GetBookingsAsync()
         {
-            var bookings = _bookingRepository.GetBookings();
+            var bookings = await _bookingRepository.GetBookingsAsync();
             return Ok(bookings);
         }
 
         [HttpGet]
         [Route("GetBookingsByUserId")]
-        public IActionResult GetBookingsByUserId(string data)
+        public async Task<IActionResult> GetBookingsByUserIdAsync(string data)
         {
             Guid userId = JsonConvert.DeserializeObject<Guid>(data);
-            return Ok(_bookingRepository.GetBookingsByUser(userId));
+            return Ok(await _bookingRepository.GetBookingsByUserAsync(userId));
         }
 
         [HttpPost]
         [Route("AddBooking")]
-        public IActionResult AddBooking([FromBody] Booking data)
+        public async Task<IActionResult> AddBookingAsync([FromBody] Booking data)
         {
-            _bookingRepository.AddBooking(data);
+            await _bookingRepository.AddBookingAsync(data);
 
             return Ok(true);
         }
 
         [HttpDelete]
         [Route("deleteBooking")]
-        public IActionResult DeleteBooking([FromBody] Guid data)
+        public async Task<IActionResult> DeleteBookingAsync([FromBody] Guid data)
         {
-           _bookingRepository.DeleteBooking(data);
+           await _bookingRepository.DeleteBookingAsync(data);
 
             return Ok(true);
         }
 
         [HttpPut]
         [Route("updateBooking")]
-        public IActionResult UpdateBooking([FromBody] Booking data)
+        public async Task<IActionResult> UpdateBookingAsync([FromBody] Booking data)
         {
-            _bookingRepository.UpdateBooking(data);
+            await _bookingRepository.UpdateBookingAsync(data);
 
             return Ok(true);
         }

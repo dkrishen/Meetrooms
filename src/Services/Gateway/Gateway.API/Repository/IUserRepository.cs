@@ -1,11 +1,12 @@
 ﻿using MRA.Gateway.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MRA.Gateway.Repository
 {
     public interface IUserRepository
     {
-        public IEnumerable<UserShortDto> GetUsersByIds(IEnumerable<Guid> ids, string token);
+        public Task<IEnumerable<UserShortDto>> GetUsersByIdsAsync(IEnumerable<Guid> ids, string token);
     }
 }

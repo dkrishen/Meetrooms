@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MRA.Gateway.Repository
 {
@@ -12,9 +13,11 @@ namespace MRA.Gateway.Repository
         {
         }
 
-        public IEnumerable<UserShortDto> GetUsersByIds(IEnumerable<Guid> ids, string token)
+        public async Task<IEnumerable<UserShortDto>> GetUsersByIdsAsync(IEnumerable<Guid> ids, string token)
         {
-            return Request.Get.Send<IEnumerable<UserShortDto>>("api/user/GetUserNamesByIds", token, ids);
+            return await Request.Get
+                .SendAsync<IEnumerable<UserShortDto>>("api/user/GetUserNamesByIds", token, ids)
+                .ConfigureAwait(false);
         }
     }
 }

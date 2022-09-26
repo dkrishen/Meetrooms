@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Gateway.API.Logic.Extenshions
 {
@@ -24,16 +25,16 @@ namespace Gateway.API.Logic.Extenshions
             }
         }
 
-        public static string Send(this HttpWebRequest request)
+        public static async Task<string> SendAsync(this HttpWebRequest request)
         {
             var result = "";
             try
             {
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                HttpWebResponse response = (HttpWebResponse)(await request.GetResponseAsync());
                 var stream = response.GetResponseStream();
                 if (stream != null)
                 {
-                    result = new StreamReader(stream).ReadToEnd();
+                    result = await new StreamReader(stream).ReadToEndAsync();
                 }
             }
             catch (Exception) { }

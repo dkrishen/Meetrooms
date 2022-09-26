@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MRA.Rooms.Controllers
 {
@@ -19,25 +20,25 @@ namespace MRA.Rooms.Controllers
 
         [HttpGet]
         [Route("GetAllRooms")]
-        public IActionResult GetAllRooms()
+        public async Task<IActionResult> GetAllRoomsAsync()
         {
-            return Ok(roomRepository.GetRooms());
+            return Ok(await roomRepository.GetRoomsAsync());
         }
 
         [HttpGet]
         [Route("GetRoomById")]
-        public IActionResult GetRoomById(string data)
+        public async Task<IActionResult> GetRoomByIdAsync(string data)
         {
             Guid roomId = JsonConvert.DeserializeObject<Guid>(data);
-            return Ok(roomRepository.GetRoomById(roomId));
+            return Ok(await roomRepository.GetRoomByIdAsync(roomId));
         }
 
         [HttpGet]
         [Route("GetRoomsByIds")]
-        public IActionResult GetRoomsByIds(string data)
+        public async Task<IActionResult> GetRoomsByIdsAsync(string data)
         {
             var roomIds = JsonConvert.DeserializeObject<IEnumerable<Guid>>(data);
-            return Ok(roomRepository.GetRoomsByIds(roomIds));
+            return Ok(await roomRepository.GetRoomsByIdsAsync(roomIds));
         }
     }
 }
