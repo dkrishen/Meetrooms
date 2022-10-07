@@ -98,7 +98,7 @@ namespace MRA.Gateway.Controllers
 
         [HttpPost]
         [Route("AddBooking")]
-        public async Task<IActionResult> AddBookingAsync([FromBody] BookingInputDto booking)
+        public IActionResult AddBookingAsync([FromBody] BookingInputDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -108,28 +108,28 @@ namespace MRA.Gateway.Controllers
             newBooking.MeetingRoomId = new Guid("1DDA7260-08E8-4B32-A9EE-F7E1CA69BC9C");  
             newBooking.UserId = userId;
 
-            bool result = await _bookingRepository
-                .AddBookingAsync(newBooking, authorizationHeaderValue);
+            bool result = _bookingRepository
+                .AddBooking(newBooking, authorizationHeaderValue);
             return Ok(result);
         }
 
         [HttpDelete]
         [Route("DeleteBooking")]
-        public async Task<IActionResult> DeleteBookingAsync([FromBody] GuidDto data)
+        public IActionResult DeleteBookingAsync([FromBody] GuidDto data)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            bool result = await _bookingRepository
-                .DeleteBookingAsync(data.id, authorizationHeaderValue);
+            bool result = _bookingRepository
+                .DeleteBooking(data.id, authorizationHeaderValue);
             return Ok(result);
         }
 
         [HttpPut]
         [Route("UpdateBooking")]
-        public async Task<IActionResult> UpdateBookingAsync([FromBody] BookingEditDto booking)
+        public IActionResult UpdateBookingAsync([FromBody] BookingEditDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            bool result = await _bookingRepository
-                .UpdateBookingAsync(_mapper.Map<Booking>(booking), authorizationHeaderValue);
+            bool result = _bookingRepository
+                .UpdateBooking(_mapper.Map<Booking>(booking), authorizationHeaderValue);
             return Ok(result);
         }
     }

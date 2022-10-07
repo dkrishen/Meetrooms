@@ -9,7 +9,7 @@ namespace MRA.Gateway.Repository
     public class MeetingRoomRepository : RepositoryBase , IMeetingRoomRepository
     {
         public MeetingRoomRepository(IConfiguration configuration) 
-            : base(configuration.GetSection("MRA.Rooms").GetValue<string>("Url"))
+            : base(configuration.GetSection("MRA.Rooms").GetValue<string>("Url"), configuration)
         {
         }
 

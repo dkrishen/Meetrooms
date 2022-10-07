@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Connections;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Diagnostics.Metrics;
@@ -8,9 +9,16 @@ namespace Gateway.API.Logic.RabbitMQ
 {
     public class RabbitProducer
     {
-        private string hostName = "localhost";
-        private string exchangeName = "mra-gateway-ex";
-        private string exchangeType = ExchangeType.Topic;
+        private string hostName;
+        private string exchangeName;
+        private string exchangeType;
+
+        public RabbitProducer(IConfiguration configuration)
+        {
+            this.hostName = configuration.GetSection("RabbitMQ").GetValue<string>("HostName");
+            this.exchangeName = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeName");
+            this.exchangeType = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeType");
+        }
 
         public bool Publish(string serviceName, string operationMethod, object data)
         {

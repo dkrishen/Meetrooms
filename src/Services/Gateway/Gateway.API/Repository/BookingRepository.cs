@@ -10,7 +10,7 @@ namespace MRA.Gateway.Repository
     public class BookingRepository : RepositoryBase , IBookingRepository
     {
         public BookingRepository(IConfiguration configuration) 
-            : base(configuration.GetSection("MRA.Bookings").GetValue<string>("Url"))
+            : base(configuration.GetSection("MRA.Bookings").GetValue<string>("Url"), configuration)
         {
         }
 

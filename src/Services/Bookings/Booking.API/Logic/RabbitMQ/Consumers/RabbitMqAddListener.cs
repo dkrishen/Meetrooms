@@ -3,31 +3,37 @@ using RabbitMQ.Client;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Text;
-using System.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using MRA.Bookings.Repositories;
 using MRA.Bookings.Models;
 using Newtonsoft.Json;
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Channels;
+using Microsoft.Extensions.Configuration;
 
 namespace MRA.Bookings.Logic.RabbitMQ.Consumers
 {
     public class RabbitMqAddListener : BackgroundService
     {
-        private string exchangeName = "mra-gateway-ex";
-        private string exchangeType = ExchangeType.Topic;
-        private string queueName = "AddBookingQueue";
-        private string routingKey = "Booking.Add";
+        private string hostName;
+        private string exchangeName;
+        private string exchangeType;
+        private string queueName;
+        private string routingKey;
         private IConnection _connection;
         private IModel _channel;
         private IServiceProvider _serviceProvider;
 
-        public RabbitMqAddListener(IServiceProvider provider)
+        public RabbitMqAddListener(IServiceProvider provider, IConfiguration configuration)
         {
+            this.hostName = configuration.GetSection("RabbitMQ").GetValue<string>("HostName");
+            this.exchangeName = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeName");
+            this.exchangeType = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeType");
+            this.queueName = configuration.GetSection("RabbitMQ").GetValue<string>("AddQueueName");
+            this.routingKey = configuration.GetSection("RabbitMQ").GetValue<string>("AddRoutingKey");
+
             _serviceProvider = provider;
-            var factory = new ConnectionFactory { HostName = "localhost" };
+            var factory = new ConnectionFactory { HostName = hostName };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
 
