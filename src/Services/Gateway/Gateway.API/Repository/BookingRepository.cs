@@ -14,18 +14,14 @@ namespace MRA.Gateway.Repository
         {
         }
 
-        public async Task<bool> AddBookingAsync(Booking booking, string token)
+        public bool AddBooking(Booking booking, string token)
         {
-            return await Request.Post
-                .SendAsync("api/Booking/AddBooking", token, booking)
-                .ConfigureAwait(false);
+            return Rabbit.Publish("Booking", "Add", booking);
         }
 
-        public async Task<bool> DeleteBookingAsync(Guid id, string token)
+        public bool DeleteBooking(Guid id, string token)
         {
-            return await Request.Delete
-                .SendAsync("api/Booking/DeleteBooking", token, id)
-                .ConfigureAwait(false);
+            return Rabbit.Publish("Booking", "Delete", id);
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsAsync(string token)
@@ -42,11 +38,9 @@ namespace MRA.Gateway.Repository
                 .ConfigureAwait(false);
         }
 
-        public async Task<bool> UpdateBookingAsync(Booking booking, string token)
+        public bool UpdateBooking(Booking booking, string token)
         {
-            return await Request.Put
-                .SendAsync("api/Booking/UpdateBooking", token, booking)
-                .ConfigureAwait(false);
+            return Rabbit.Publish("Booking", "Update", booking);
         }
     }
 }

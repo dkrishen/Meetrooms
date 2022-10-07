@@ -17,7 +17,6 @@ namespace MRA.Bookings.Controllers
         private readonly ILogger<BookingController> _logger;
         private readonly IBookingRepository _bookingRepository;
 
-
         public BookingController(ILogger<BookingController> logger, IBookingRepository bookingRepository)
         {
             _logger = logger;
