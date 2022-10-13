@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using MRA.Bookings.Logic.SignalR;
 
 namespace MRA.Bookings.Logic.RabbitMQ.Consumers
 {
@@ -23,8 +24,9 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
         private IConnection _connection;
         private IModel _channel;
         private IServiceProvider _serviceProvider;
+        private readonly ISignalRClient signalRClient;
 
-        public RabbitMqAddListener(IServiceProvider provider, IConfiguration configuration)
+        public RabbitMqAddListener(IServiceProvider provider, IConfiguration configuration, ISignalRClient signalRClient)
         {
             this.hostName = configuration.GetSection("RabbitMQ").GetValue<string>("HostName");
             this.exchangeName = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeName");
@@ -33,6 +35,7 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             this.routingKey = configuration.GetSection("RabbitMQ").GetValue<string>("AddRoutingKey");
 
             _serviceProvider = provider;
+            this.signalRClient = signalRClient;
             var factory = new ConnectionFactory { HostName = hostName };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
@@ -62,6 +65,7 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
                 {
                     var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
                     await bookingRepository.AddBookingAsync(booking);
+                    await signalRClient.SendNotificationAsync("name", "message", "token");
                 }
 
                 _channel.BasicAck(ea.DeliveryTag, false);
