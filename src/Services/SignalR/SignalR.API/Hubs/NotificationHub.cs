@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using System;
  using System.Linq;
 using System.Threading.Tasks;
 
 namespace SignalR.API.Hubs
 {
+    [Authorize]
     public class NotificationHub : Hub<INotificationHub>
     {
         private ChatManager chatManager;
@@ -49,7 +51,7 @@ namespace SignalR.API.Hubs
 
         public async Task SendNotificationAsync(string userName, string message)
         {
-            await Clients.Others.SendNotificationAsync(userName, message);
+            await Clients.All.SendNotificationAsync(userName, message);
             //await Clients.User(userName).SendNotificationAsync(userName, message);
         }
     }

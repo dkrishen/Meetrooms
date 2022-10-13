@@ -20,13 +20,13 @@ namespace MRA.Bookings.Logic.SignalR
 
         }
 
-        public async Task SendNotificationAsync(string username, string message, string token)
+        public async Task SendNotificationAsync(string message, string token)
         {
             Console.WriteLine("Creating connection...");
             var connection = new HubConnectionBuilder()
                 .WithUrl(hubUrl, options =>
                 {
-                    options.Headers.Add("Authorization", $"Bearer {token}");
+                    options.Headers.Add("Authorization", token);
                 })
                 .WithAutomaticReconnect()
                 .Build();
@@ -35,7 +35,7 @@ namespace MRA.Bookings.Logic.SignalR
 
             try
             {
-                await connection.SendAsync("SendNotificationAsync", username, message);
+                await connection.SendAsync("SendNotificationAsync", "username", message);
             }
             catch (Exception exception)
             {

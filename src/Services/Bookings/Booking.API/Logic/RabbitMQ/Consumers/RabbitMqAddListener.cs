@@ -59,13 +59,13 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             consumer.Received += async (ch, ea) =>
             {
                 var jsonData = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var booking = JsonConvert.DeserializeObject<Booking>(jsonData);
+                var bookingTokenDto = JsonConvert.DeserializeObject<BookingTokenDto>(jsonData);
 
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
-                    await bookingRepository.AddBookingAsync(booking);
-                    await signalRClient.SendNotificationAsync("name", "message", "token");
+                    await bookingRepository.AddBookingAsync(bookingTokenDto.Booking);
+                    await signalRClient.SendNotificationAsync("message", bookingTokenDto.Token);
                 }
 
                 _channel.BasicAck(ea.DeliveryTag, false);

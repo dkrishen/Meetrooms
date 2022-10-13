@@ -4,6 +4,6 @@ namespace MRA.Bookings.Logic.SignalR
 {
     public interface ISignalRClient
     {
-        public Task SendNotificationAsync(string username, string message, string token);
+        public Task SendNotificationAsync(string message, string token);
     }
 }

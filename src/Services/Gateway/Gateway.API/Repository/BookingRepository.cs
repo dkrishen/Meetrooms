@@ -16,12 +16,16 @@ namespace MRA.Gateway.Repository
 
         public bool AddBooking(Booking booking, string token)
         {
-            return Rabbit.Publish("Booking", "Add", booking);
+            var data = new BookingTokenDto { Booking = booking, Token = token };
+
+            return Rabbit.Publish("Booking", "Add", data);
         }
 
         public bool DeleteBooking(Guid id, string token)
         {
-            return Rabbit.Publish("Booking", "Delete", id);
+            var data = new GuidTokenDto { Id = id, Token = token };
+
+            return Rabbit.Publish("Booking", "Delete", data);
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsAsync(string token)
@@ -40,7 +44,9 @@ namespace MRA.Gateway.Repository
 
         public bool UpdateBooking(Booking booking, string token)
         {
-            return Rabbit.Publish("Booking", "Update", booking);
+            var data = new BookingTokenDto { Booking = booking, Token = token };
+
+            return Rabbit.Publish("Booking", "Update", data);
         }
     }
 }
