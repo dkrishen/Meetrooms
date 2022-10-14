@@ -65,7 +65,8 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
                 {
                     var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
                     await bookingRepository.AddBookingAsync(bookingTokenDto.Booking);
-                    await signalRClient.SendNotificationAsync("message", bookingTokenDto.Token);
+                    //await or not await ?
+                    await signalRClient.SendNotificationAsync($"Your bokking at {bookingTokenDto.Booking.StartTime.ToString()} added succesfully!", bookingTokenDto.Token);
                 }
 
                 _channel.BasicAck(ea.DeliveryTag, false);

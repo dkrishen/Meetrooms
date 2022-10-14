@@ -35,7 +35,8 @@ namespace MRA.Bookings.Logic.SignalR
 
             try
             {
-                await connection.SendAsync("SendNotificationAsync", "username", message);
+                await connection.SendAsync("SendNotificationAsync", message);
+                connection.StopAsync().GetAwaiter().GetResult();
             }
             catch (Exception exception)
             {

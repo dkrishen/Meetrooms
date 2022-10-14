@@ -24,7 +24,7 @@ namespace SignalR.API.Hubs
 
         public bool DisconnectUser(string connectionId)
         {
-            var userExists = GetConnectedUserByName(connectionId);
+            var userExists = GetConnectedUserById(connectionId);
             if (userExists == null)
             {
                 return false;

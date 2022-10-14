@@ -19,8 +19,6 @@ namespace SignalR.API.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var tmp = Context.ConnectionId;
-
             var userName = Context.User?.Identity?.Name ?? "Anonymous";
             var connectionId = Context.ConnectionId;
             chatManager.ConnectUser(userName, connectionId);
@@ -45,14 +43,22 @@ namespace SignalR.API.Hubs
 
         public async Task UpdateUsersAsync()
         {
-            var users = chatManager.Users.Select(x => x.UserName).ToList();
+            var users = chatManager.Users.Select(x => x.UserName + " " + x.Connections.Count.ToString()).ToList();
             await Clients.All.UpdateUsersAsync(users);
         }
 
-        public async Task SendNotificationAsync(string userName, string message)
+        public async Task SendNotificationAsync(string message)
         {
-            await Clients.All.SendNotificationAsync(userName, message);
-            //await Clients.User(userName).SendNotificationAsync(userName, message);
+            var userName = Context.User?.Identity?.Name ?? "Anonymous";
+            await Clients.All.SendNotificationAsync(message);
+            await Clients
+                .Clients(chatManager
+                    .Users
+                    .Where(x => x.UserName == userName)
+                    .FirstOrDefault()
+                    .Connections
+                    .Select(x => x.ConnectionId))
+                .SendNotificationAsync(message);
         }
     }
 }
