@@ -35,7 +35,7 @@ namespace SignalR.API.Hubs
                 return false;
             }
 
-            var connectionExists = userExists.Connections.Select(x => x.ConnectionId).First().Equals(connectionId);
+            var connectionExists = userExists.Connections.Where(x => x.ConnectionId == connectionId).Count() == 1;
             if (!connectionExists)
             {
                 return false;

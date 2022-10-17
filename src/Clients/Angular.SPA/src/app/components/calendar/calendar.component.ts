@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { SelectDateDialogBoxComponent } from '../select-date-dialog-box/select-date-dialog-box.component';
 import { UserService } from 'src/app/services/user.service';
 import { DOCUMENT } from '@angular/common';
+import { SignalRService } from 'src/app/services/signalr.service';
 
 @Component({
   selector: 'app-calendar',
@@ -23,6 +24,7 @@ export class CalendarComponent implements OnInit {
     private bookingService: BookingService,
     private dialog: MatDialog,
     private userService: UserService,
+    private signalrService: SignalRService,
     @Inject(DOCUMENT) private document: Document) { 
     this.createCalendar();
   }
@@ -52,7 +54,8 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateName()
+    this.updateName();
+    this.signalrService.start();
   }
 
   calendarOptions: CalendarOptions = {
@@ -78,7 +81,7 @@ export class CalendarComponent implements OnInit {
     .subscribe(data => {
       if(data != undefined){
         this.bookingService.postBooking(data).subscribe(() => {
-          this.resetPage()
+          // this.resetPage()
         });
       }
     });

@@ -23,6 +23,17 @@ namespace SignalR.API
             var url = Configuration.GetSection("IdentityServer").GetValue<string>("Url");
             services.AddHttpContextAccessor();
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
+
             services
                 .AddAuthentication(options =>
                 {
@@ -62,8 +73,8 @@ namespace SignalR.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors();
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

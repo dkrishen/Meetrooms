@@ -50,7 +50,6 @@ namespace SignalR.API.Hubs
         public async Task SendNotificationAsync(string message)
         {
             var userName = Context.User?.Identity?.Name ?? "Anonymous";
-            await Clients.All.SendNotificationAsync(message);
             await Clients
                 .Clients(chatManager
                     .Users
