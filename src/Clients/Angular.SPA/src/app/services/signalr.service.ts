@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BACK_API_URL } from '../app-injection-tokens';
+import { BACK_API_URL, SIGNALR_HUB_URL } from '../app-injection-tokens';
 import { AuthService } from './auth.service';
 import * as signalR from '@aspnet/signalr';
 
@@ -7,12 +7,12 @@ import * as signalR from '@aspnet/signalr';
   providedIn: 'root'
 })
 export class SignalRService {
-  
+
   private notificationHubConnection: signalR.HubConnection | undefined;
 
   constructor(
     private authService: AuthService,
-    @Inject(BACK_API_URL) private apiUrl: string,
+    @Inject(SIGNALR_HUB_URL) private signalrUrl: string,
   ) { }
 
   public start(){
@@ -36,7 +36,7 @@ export class SignalRService {
     const token = this.authService.getAccessToken();
     
     this.notificationHubConnection = new signalR.HubConnectionBuilder()
-    .withUrl('http://localhost:5400/notification', {
+    .withUrl(this.signalrUrl+'notification', {
       accessTokenFactory: () => token
     })
     .build();
