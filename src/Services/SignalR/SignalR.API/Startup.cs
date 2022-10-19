@@ -20,14 +20,15 @@ namespace SignalR.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var url = Configuration.GetSection("IdentityServer").GetValue<string>("Url");
+            var identityUrl = Configuration.GetSection("IdentityServer").GetValue<string>("Url");
+            var clientUrl = Configuration.GetSection("SPA").GetValue<string>("Url");
             services.AddHttpContextAccessor();
 
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200")
+                    builder.WithOrigins(clientUrl)
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();
@@ -59,7 +60,7 @@ namespace SignalR.API
                         }
                     };
                     options.SupportedTokens = SupportedTokens.Jwt;
-                    options.Authority = $"{url}";
+                    options.Authority = $"{identityUrl}";
                     options.EnableCaching = true;
                     options.RequireHttpsMetadata = false;
                 });

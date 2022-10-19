@@ -1,6 +1,7 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { SignalRService } from './services/signalr.service';
+import * as Notiflix from 'notiflix';
 
 @Component({
   selector: 'app-root',
@@ -17,5 +18,15 @@ export class AppComponent {
   @HostListener('window:beforeunload')
   async unsubscribeFromNotifications() {
     this.signalrService.stop();
+  }
+
+  ngOnInit() {
+    this.signalrService.trigger$.subscribe((message) => {
+      this.showSuccess(''+message);
+    });
+  }
+  
+  showSuccess(message: string) {
+    Notiflix.Notify.success(message);
   }
 }

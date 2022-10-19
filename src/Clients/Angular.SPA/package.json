@@ -30,6 +30,7 @@
     "angular-oauth2-oidc-jwks": "^13.0.1",
     "guid-typescript": "^1.0.9",
     "ngx-material-timepicker": "^5.5.3",
+    "notiflix": "^3.2.5",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { BACK_API_URL, SIGNALR_HUB_URL } from '../app-injection-tokens';
+import { SIGNALR_HUB_URL } from '../app-injection-tokens';
 import { AuthService } from './auth.service';
 import * as signalR from '@aspnet/signalr';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,12 @@ export class SignalRService {
 
   constructor(
     private authService: AuthService,
-    @Inject(SIGNALR_HUB_URL) private signalrUrl: string,
-  ) { }
+    @Inject(SIGNALR_HUB_URL) private signalrUrl: string  ) { }
+
+  private _trigger = new Subject<void>();
+  get trigger$() {
+    return this._trigger.asObservable();
+  }
 
   public start(){
     if(this.isConnected()){
@@ -32,7 +37,6 @@ export class SignalRService {
   }
 
   public startConnection = () => {
-    console.log("startConnection");
     const token = this.authService.getAccessToken();
     
     this.notificationHubConnection = new signalR.HubConnectionBuilder()
@@ -49,8 +53,12 @@ export class SignalRService {
   
   public addNotificationListener = () => {
     this.notificationHubConnection?.on('SendNotificationAsync', (notification) => {
-      console.log(notification);
+      this._trigger.next(notification);
     });
+  }
+
+  public callNotification(message: string){
+
   }
   
   public stop() {
