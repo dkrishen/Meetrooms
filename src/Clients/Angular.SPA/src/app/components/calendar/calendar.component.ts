@@ -124,7 +124,7 @@ export class CalendarComponent implements OnInit {
               booking.date = data.date;
 
               this.bookingService.updateBooking(booking).subscribe(() => {
-                this.resetPage()
+                //this.resetPage()
               });
             
             }
@@ -132,7 +132,7 @@ export class CalendarComponent implements OnInit {
           else {
             if (booking != undefined){
               this.bookingService.deleteBooking(booking.id).subscribe(() => {
-                this.resetPage();
+                //this.resetPage();
               });
             }
           }
