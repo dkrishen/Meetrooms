@@ -47,7 +47,7 @@ namespace SignalR.API.Hubs
             await Clients.All.UpdateUsersAsync(users);
         }
 
-        public async Task SendNotificationAsync(string message)
+        public async Task SendNotificationAsync(string notification)
         {
             var userName = Context.User?.Identity?.Name ?? "Anonymous";
             await Clients
@@ -57,7 +57,7 @@ namespace SignalR.API.Hubs
                     .FirstOrDefault()
                     .Connections
                     .Select(x => x.ConnectionId))
-                .SendNotificationAsync(message);
+                .SendNotificationAsync(notification);
         }
     }
 }

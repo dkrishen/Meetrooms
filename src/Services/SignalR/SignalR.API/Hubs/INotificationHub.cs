@@ -5,7 +5,7 @@ namespace SignalR.API.Hubs
 {
     public interface INotificationHub
     {
-        Task SendNotificationAsync(string message);
+        Task SendNotificationAsync(string notification);
         Task UpdateUsersAsync(IEnumerable<string> users);
     }
 }
