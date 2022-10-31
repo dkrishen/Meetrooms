@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using MRA.Bookings.Logic.RabbitMQ.Consumers;
+using MRA.Bookings.Logic.SignalR;
 
 namespace MRA.Bookings
 {
@@ -47,6 +48,7 @@ namespace MRA.Bookings
                     new MySqlServerVersion(new Version(8, 0, 30))
                     ));
             services.AddTransient<IBookingRepository, BookingRepository>();
+            services.AddSingleton<ISignalRClient, SignalRClient>();
             services.AddHostedService<RabbitMqAddListener>();
             services.AddHostedService<RabbitMqDeleteListener>();
             services.AddHostedService<RabbitMqUpdateListener>();

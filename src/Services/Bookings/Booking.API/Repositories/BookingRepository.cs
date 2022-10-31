@@ -25,13 +25,19 @@ namespace MRA.Bookings.Repositories
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
             context.Bookings.Remove(booking);
-            await context.SaveChangesAsync().ConfigureAwait(false); ;
+            await context.SaveChangesAsync().ConfigureAwait(false); 
+        }
+
+        public async Task<Booking> GetBookingByIdAsync(Guid bookingId)
+        {
+            return await context.Bookings
+                .Where(b => b.Id == bookingId).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsAsync()
         {
             return await context.Bookings
-                .ToListAsync().ConfigureAwait(false); ;
+                .ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsByUserAsync(Guid userId)

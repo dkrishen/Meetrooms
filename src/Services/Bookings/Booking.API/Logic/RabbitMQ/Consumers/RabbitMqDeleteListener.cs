@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using MRA.Bookings.Logic.SignalR;
+using MRA.Bookings.Models;
 
 namespace MRA.Bookings.Logic.RabbitMQ.Consumers
 {
@@ -22,8 +24,9 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
         private IConnection _connection;
         private IModel _channel;
         private IServiceProvider _serviceProvider;
+        private readonly ISignalRClient signalRClient;
 
-        public RabbitMqDeleteListener(IServiceProvider provider, IConfiguration configuration)
+        public RabbitMqDeleteListener(IServiceProvider provider, IConfiguration configuration, ISignalRClient signalRClient)
         {
             this.hostName = configuration.GetSection("RabbitMQ").GetValue<string>("HostName");
             this.exchangeName = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeName");
@@ -32,6 +35,7 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             this.routingKey = configuration.GetSection("RabbitMQ").GetValue<string>("DeleteRoutingKey");
 
             _serviceProvider = provider;
+            this.signalRClient = signalRClient;
             var factory = new ConnectionFactory { HostName = hostName };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
@@ -55,12 +59,14 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             consumer.Received += async (ch, ea) =>
             {
                 var jsonData = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var id = JsonConvert.DeserializeObject<Guid>(jsonData);
+                var idTokenDto = JsonConvert.DeserializeObject<GuidTokenDto>(jsonData);
 
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
-                    await bookingRepository.DeleteBookingAsync(id);
+                    var booking = await bookingRepository.GetBookingByIdAsync(idTokenDto.Id);
+                    await bookingRepository.DeleteBookingAsync(idTokenDto.Id);
+                    await signalRClient.SendNotificationAsync($"Your booking at {booking.StartTime.ToString()} removed succesfully!", idTokenDto.Token);
                 }
 
                 _channel.BasicAck(ea.DeliveryTag, false);

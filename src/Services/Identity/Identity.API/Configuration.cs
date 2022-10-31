@@ -108,7 +108,7 @@ namespace MRA.Identity
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "my_scope",
-                        "MRAApi"
+                        "ApiScope"
                     },
                     RequirePkce = true,
                     AllowPlainTextPkce = false,

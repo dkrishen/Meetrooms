@@ -19,6 +19,11 @@ export class AuthService {
     localStorage.setItem(ACCESS_TOKEN_KEY, token)
   }
 
+  getAccessToken(): string {
+    var token = this.oauthService.getAccessToken();
+    return token;
+  }
+
   isAuthenticate() : boolean{
     let claims:any = this.oauthService.getIdentityClaims();
     return claims ? true : false;

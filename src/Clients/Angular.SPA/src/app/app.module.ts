@@ -18,7 +18,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 import { HomeComponent } from './components/home/home.component';
 import { BookingsComponent } from './components/bookings/bookings.component';
-import { AUTH_API_URL, BACK_API_URL } from './app-injection-tokens';
+import { AUTH_API_URL, BACK_API_URL, SIGNALR_HUB_URL } from './app-injection-tokens';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -88,6 +88,10 @@ FullCalendarModule.registerPlugins([
     {
       provide: BACK_API_URL,
       useValue: environment.backApi    
+    },
+    {
+      provide: SIGNALR_HUB_URL,
+      useValue: environment.signalrApi    
     },
     {
       provide: AUTH_API_URL,

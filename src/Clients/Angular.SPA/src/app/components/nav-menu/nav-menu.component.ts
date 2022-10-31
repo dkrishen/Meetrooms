@@ -1,5 +1,6 @@
 import {Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { SignalRService } from 'src/app/services/signalr.service';
 import { UserService } from 'src/app/services/user.service';
 
 
@@ -11,7 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 export class NavMenuComponent {
   constructor(
     private authService: AuthService, 
-    private userService: UserService
+    private userService: UserService,
+    private signalrService: SignalRService
   )
   {
     this.updateName();
@@ -23,6 +25,7 @@ export class NavMenuComponent {
     this.authService.login();
   }
   logout(){
+    this.signalrService.stop();
     this.authService.logout();
   }
 
