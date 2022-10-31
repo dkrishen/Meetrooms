@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Connections;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using System.Diagnostics.Metrics;
+using System;
 using System.Text;
 
 namespace Gateway.API.Logic.RabbitMQ
@@ -10,12 +9,18 @@ namespace Gateway.API.Logic.RabbitMQ
     public class RabbitProducer
     {
         private string hostName;
+        private int port;
+        private string userName;
+        private string password;
         private string exchangeName;
         private string exchangeType;
 
         public RabbitProducer(IConfiguration configuration)
         {
             this.hostName = configuration.GetSection("RabbitMQ").GetValue<string>("HostName");
+            this.port = configuration.GetSection("RabbitMQ").GetValue<int>("Port");
+            this.userName = configuration.GetSection("RabbitMQ").GetValue<string>("UserName");
+            this.password = configuration.GetSection("RabbitMQ").GetValue<string>("Password");
             this.exchangeName = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeName");
             this.exchangeType = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeType");
         }
@@ -24,7 +29,13 @@ namespace Gateway.API.Logic.RabbitMQ
         {
             try
             {
-                var factory = new ConnectionFactory() { HostName = hostName };
+                var factory = new ConnectionFactory() { 
+                    HostName = hostName, 
+                    Port = port, 
+                    UserName = userName, 
+                    Password = password
+                };
+
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())
                 {
@@ -34,6 +45,8 @@ namespace Gateway.API.Logic.RabbitMQ
 
                     string jsonData = JsonConvert.SerializeObject(data);
                     var body = Encoding.UTF8.GetBytes(jsonData);
+
+                    Console.WriteLine("LOG: " + routingKey + '\n' + jsonData);
 
                     channel.BasicPublish(exchange: exchangeName,
                         routingKey: routingKey,

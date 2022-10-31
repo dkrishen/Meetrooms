@@ -17,6 +17,9 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
     public abstract class RabbitMqBaseListener : BackgroundService
     {
         protected string hostName;
+        protected int port;
+        protected string userName;
+        protected string password;
         protected string exchangeName;
         protected string exchangeType;
         protected string queueName;
@@ -31,7 +34,14 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             Configure(configuration);
             _serviceProvider = provider;
             this.signalRClient = signalRClient;
-            var factory = new ConnectionFactory { HostName = hostName };
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = hostName,
+                Port = port,
+                UserName = userName,
+                Password = password
+            };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
 

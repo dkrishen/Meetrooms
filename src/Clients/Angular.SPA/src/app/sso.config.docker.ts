@@ -6,7 +6,7 @@ export const authConfig: AuthConfig = {
   clientId: 'MRAAngular',
   dummyClientSecret: 'AngularSecret',
   responseType: 'code',
-  scope: 'openid profile email my_scope',
+  scope: 'openid profile email my_scope ApiScope',
   requireHttps: false,
 
   showDebugInformation: true,

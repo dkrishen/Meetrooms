@@ -1,16 +1,17 @@
 ﻿using System;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace MRA.Bookings.Logic.SignalR
 {
     public class SignalRClient : ISignalRClient
     {
-        const string hubUrl = "http://localhost:5400/notification";
+        string hubUrl;
 
-        public SignalRClient()
+        public SignalRClient(IConfiguration configuration)
         {
-
+            hubUrl = configuration.GetSection("SignalR").GetValue<string>("NotificationHubURL");
         }
 
         public async Task SendNotificationAsync(string message, string token)
