@@ -114,27 +114,5 @@ namespace MRA.Identity
                     AllowPlainTextPkce = false,
                     AllowedCorsOrigins = { AppSettings.GetValue<string>("AngularUrl")},
                 },
-                new Client
-                {
-                ClientId = "microservice1",
-                AllowAccessTokensViaBrowser = true,
-                IdentityTokenLifetime = 21600,
-                AuthorizationCodeLifetime = 21600,
-                AccessTokenLifetime = 21600,
-                AllowOfflineAccess =  true,
-                RefreshTokenUsage = TokenUsage.ReUse,
-                RefreshTokenExpiration = TokenExpiration.Sliding,
-                SlidingRefreshTokenLifetime = 1296000, //in seconds = 15 days
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                RequireClientSecret = false,
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        "ApiScope"
-                    },
-                },
-            };
     }
 }

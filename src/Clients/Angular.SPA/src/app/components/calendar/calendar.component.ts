@@ -81,7 +81,6 @@ export class CalendarComponent implements OnInit {
     .subscribe(data => {
       if(data != undefined){
         this.bookingService.postBooking(data).subscribe(() => {
-          // this.resetPage()
         });
       }
     });
@@ -124,7 +123,6 @@ export class CalendarComponent implements OnInit {
               booking.date = data.date;
 
               this.bookingService.updateBooking(booking).subscribe(() => {
-                //this.resetPage()
               });
             
             }
@@ -132,7 +130,6 @@ export class CalendarComponent implements OnInit {
           else {
             if (booking != undefined){
               this.bookingService.deleteBooking(booking.id).subscribe(() => {
-                //this.resetPage();
               });
             }
           }

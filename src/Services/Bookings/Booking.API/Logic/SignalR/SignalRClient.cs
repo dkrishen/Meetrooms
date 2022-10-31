@@ -1,19 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
-using System;
+﻿using System;
 using Microsoft.AspNetCore.SignalR.Client;
-using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 namespace MRA.Bookings.Logic.SignalR
 {
     public class SignalRClient : ISignalRClient
     {
-        //const string authUrl = "http://localhost:5000/connect/token";
         const string hubUrl = "http://localhost:5400/notification";
-
-        //HubConnection connection;
 
         public SignalRClient()
         {

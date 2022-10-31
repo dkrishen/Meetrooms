@@ -3,7 +3,6 @@ import { AuthService } from './services/auth.service';
 import { SignalRService } from './services/signalr.service';
 import * as Notiflix from 'notiflix';
 import { DOCUMENT } from '@angular/common';
-import { Notification } from './models/notification';
 
 @Component({
   selector: 'app-root',
