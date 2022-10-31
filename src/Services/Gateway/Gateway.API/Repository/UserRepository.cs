@@ -9,7 +9,7 @@ namespace MRA.Gateway.Repository
     public class UserRepository : RepositoryBase, IUserRepository
     {
         public UserRepository(IConfiguration configuration) : 
-            base(configuration.GetSection("MRA.Users").GetValue<string>("Url"))
+            base(configuration.GetSection("MRA.Users").GetValue<string>("Url"), configuration)
         {
         }
 

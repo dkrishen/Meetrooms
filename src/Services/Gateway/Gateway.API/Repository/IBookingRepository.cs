@@ -9,8 +9,8 @@ namespace MRA.Gateway.Repository
     {
         public Task<IEnumerable<Booking>> GetBookingsAsync(string token);
         public Task<IEnumerable<Booking>> GetBookingsByUserAsync(Guid id, string token);
-        public Task<bool> AddBookingAsync(Booking booking, string token);
-        public Task<bool> UpdateBookingAsync(Booking booking, string token);
-        public Task<bool> DeleteBookingAsync(Guid id, string token);
+        public bool AddBooking(Booking booking, string token);
+        public bool UpdateBooking(Booking booking, string token);
+        public bool DeleteBooking(Guid id, string token);
     }
 }

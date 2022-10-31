@@ -12,46 +12,76 @@ namespace MRA.Bookings.Repositories
     {
         public BookingRepository(MRABookingsDbContext context) : base(context) { }
 
-        public async Task AddBookingAsync(Booking booking)
+        public async Task<bool> AddBookingAsync(Booking booking)
         {
-            await context.Bookings.AddAsync(booking).ConfigureAwait(false);
-            await context.SaveChangesAsync().ConfigureAwait(false);
+            try
+            {
+                await context.Bookings.AddAsync(booking).ConfigureAwait(false);
+                await context.SaveChangesAsync().ConfigureAwait(false);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public async Task DeleteBookingAsync(Guid id)
+        public async Task<bool> DeleteBookingAsync(Guid id)
         {
-            Booking booking = await context.Bookings
-                .Where(b => b.Id == id)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            try
+            {
+                Booking booking = await context.Bookings
+                    .Where(b => b.Id == id)
+                    .SingleOrDefaultAsync().ConfigureAwait(false);
 
-            context.Bookings.Remove(booking);
-            await context.SaveChangesAsync().ConfigureAwait(false); ;
+                context.Bookings.Remove(booking);
+                await context.SaveChangesAsync().ConfigureAwait(false);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<Booking> GetBookingByIdAsync(Guid bookingId)
+        {
+            return await context.Bookings
+                .Where(b => b.Id == bookingId).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsAsync()
         {
             return await context.Bookings
-                .ToListAsync().ConfigureAwait(false); ;
+                .ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsByUserAsync(Guid userId)
         {
             return await context.Bookings
                 .Where(b => b.UserId == userId)
-                .ToListAsync().ConfigureAwait(false); ;
+                .ToListAsync().ConfigureAwait(false); 
         }
 
-        public async Task UpdateBookingAsync(Booking booking)
+        public async Task<bool> UpdateBookingAsync(Booking booking)
         {
-            var result = await context.Bookings
-                .SingleOrDefaultAsync(b => b.Id == booking.Id).ConfigureAwait(false); 
-
-            if (result != null)
+            try
             {
-                result.StartTime = booking.StartTime;
-                result.EndTime = booking.EndTime;
-                result.Date = booking.Date;
-                await context.SaveChangesAsync().ConfigureAwait(false); ;
+                var result = await context.Bookings
+                    .SingleOrDefaultAsync(b => b.Id == booking.Id).ConfigureAwait(false);
+
+                if (result != null)
+                {
+                    result.StartTime = booking.StartTime;
+                    result.EndTime = booking.EndTime;
+                    result.Date = booking.Date;
+                    await context.SaveChangesAsync().ConfigureAwait(false);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

@@ -9,8 +9,9 @@ namespace MRA.Bookings.Repositories
     {
         public Task<IEnumerable<Booking>> GetBookingsAsync();
         public Task<IEnumerable<Booking>> GetBookingsByUserAsync(Guid userId);
-        public Task AddBookingAsync(Booking booking);
-        public Task UpdateBookingAsync(Booking booking);
-        public Task DeleteBookingAsync(Guid id);
+        public Task<Booking> GetBookingByIdAsync(Guid bookingId);
+        public Task<bool> AddBookingAsync(Booking booking);
+        public Task<bool> UpdateBookingAsync(Booking booking);
+        public Task<bool> DeleteBookingAsync(Guid id);
     }
 }

@@ -10,22 +10,22 @@ namespace MRA.Gateway.Repository
     public class BookingRepository : RepositoryBase , IBookingRepository
     {
         public BookingRepository(IConfiguration configuration) 
-            : base(configuration.GetSection("MRA.Bookings").GetValue<string>("Url"))
+            : base(configuration.GetSection("MRA.Bookings").GetValue<string>("Url"), configuration)
         {
         }
 
-        public async Task<bool> AddBookingAsync(Booking booking, string token)
+        public bool AddBooking(Booking booking, string token)
         {
-            return await Request.Post
-                .SendAsync("api/Booking/AddBooking", token, booking)
-                .ConfigureAwait(false);
+            var data = new BookingTokenDto { Booking = booking, Token = token };
+
+            return Rabbit.Publish("Booking", "Add", data);
         }
 
-        public async Task<bool> DeleteBookingAsync(Guid id, string token)
+        public bool DeleteBooking(Guid id, string token)
         {
-            return await Request.Delete
-                .SendAsync("api/Booking/DeleteBooking", token, id)
-                .ConfigureAwait(false);
+            var data = new GuidTokenDto { Id = id, Token = token };
+
+            return Rabbit.Publish("Booking", "Delete", data);
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsAsync(string token)
@@ -42,11 +42,11 @@ namespace MRA.Gateway.Repository
                 .ConfigureAwait(false);
         }
 
-        public async Task<bool> UpdateBookingAsync(Booking booking, string token)
+        public bool UpdateBooking(Booking booking, string token)
         {
-            return await Request.Put
-                .SendAsync("api/Booking/UpdateBooking", token, booking)
-                .ConfigureAwait(false);
+            var data = new BookingTokenDto { Booking = booking, Token = token };
+
+            return Rabbit.Publish("Booking", "Update", data);
         }
     }
 }
