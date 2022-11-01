@@ -22,12 +22,12 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             this.routingKey = configuration.GetSection("RabbitMQ").GetValue<string>("AddRoutingKey");
         }
 
-        public override async Task<(NotificationDto, string)> OperationAsync(IBookingRepository bookingRepository, string jsonData)
+        public override async Task<(NotificationDto, string)> OperationAsync(IBookingLogic bookingLogic, string jsonData)
         {
             var bookingTokenDto = JsonConvert.DeserializeObject<BookingTokenDto>(jsonData);
             NotificationDto notification;
 
-            if (await bookingRepository.AddBookingAsync(bookingTokenDto.Booking))
+            if (await bookingLogic.AddBookingAsync(bookingTokenDto.Booking))
             {
                 notification = new NotificationDto()
                 {

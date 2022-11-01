@@ -59,9 +59,9 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
 
                 using (var scope = _serviceProvider.CreateScope())
                 {
-                    var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
+                    var bookingLogic = scope.ServiceProvider.GetRequiredService<IBookingLogic>();
 
-                    (var notification, string token) = await OperationAsync(bookingRepository, jsonData);
+                    (var notification, string token) = await OperationAsync(bookingLogic, jsonData);
 
                     var notificationJson = JsonConvert.SerializeObject(notification);
 
@@ -75,7 +75,7 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             return Task.CompletedTask;
         }
 
-        public abstract Task<(NotificationDto, string)> OperationAsync(IBookingRepository bookingRepository, string jsonData);
+        public abstract Task<(NotificationDto, string)> OperationAsync(IBookingLogic bookingLogic, string jsonData);
 
         public override void Dispose()
         {
