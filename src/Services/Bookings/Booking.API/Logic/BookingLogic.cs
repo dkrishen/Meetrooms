@@ -1,6 +1,7 @@
 ﻿using MRA.Bookings.Models;
 using MRA.Bookings.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,25 +49,12 @@ namespace MRA.Bookings.Logic
         private async Task<bool> validateBooking(Booking booking)
         {
             var allBookings = await _bookingRepository.GetBookingsAsync();
-            var data = allBookings;
+            var collision = FindCollision(allBookings, booking).ToList();
+            var currentBooking = await _bookingRepository.GetBookingByIdAsync(booking.Id);
 
-            var collision = allBookings
-                .Where(b => b.Date == booking.Date)
-                .Where(b => {
-                    if ((booking.StartTime > b.StartTime && booking.StartTime < b.EndTime) ||
-                      (booking.EndTime > b.StartTime && booking.EndTime < b.EndTime) ||
-                      (b.StartTime > booking.StartTime && b.StartTime < booking.EndTime))
-                    {
-                        return true;
-                    }
-                    else return false;
-                }).ToList();
-
-            var current = await _bookingRepository.GetBookingByIdAsync(booking.Id);
-
-            if(current != null)
+            if(currentBooking != null)
             {
-                collision.Remove(current);
+                collision.Remove(currentBooking);
             }
 
             if (collision?.Count() != 0)
@@ -75,6 +63,24 @@ namespace MRA.Bookings.Logic
             }
 
             return true;
+        }
+
+        private IEnumerable<Booking> FindCollision(IEnumerable<Booking> allBookings, Booking booking)
+        {
+            return allBookings
+                .Where(b => b.Date == booking.Date)
+                .Where(b => CheckCollision(b, booking));
+        }
+
+        private bool CheckCollision(Booking first, Booking second)
+        {
+            if ((first.StartTime >= second.StartTime && first.StartTime <= second.EndTime) ||
+              (first.EndTime >= second.StartTime && first.EndTime <= second.EndTime) ||
+              (second.StartTime >= first.StartTime && second.StartTime <= first.EndTime))
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
