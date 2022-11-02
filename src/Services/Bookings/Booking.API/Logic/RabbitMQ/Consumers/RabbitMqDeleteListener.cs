@@ -22,13 +22,13 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             this.routingKey = configuration.GetSection("RabbitMQ").GetValue<string>("DeleteRoutingKey");
         }
 
-        public override async Task<(NotificationDto, string)> OperationAsync(IBookingRepository bookingRepository, string jsonData)
+        public override async Task<(NotificationDto, string)> OperationAsync(IBookingLogic bookingLogic, string jsonData)
         {
             var idTokenDto = JsonConvert.DeserializeObject<GuidTokenDto>(jsonData);
             NotificationDto notification;
 
-            var booking = await bookingRepository.GetBookingByIdAsync(idTokenDto.Id);
-            if (await bookingRepository.DeleteBookingAsync(idTokenDto.Id))
+            var booking = await bookingLogic.GetBookingByIdAsync(idTokenDto.Id);
+            if (await bookingLogic.DeleteBookingAsync(idTokenDto.Id))
             {
                 notification = new NotificationDto()
                 {
