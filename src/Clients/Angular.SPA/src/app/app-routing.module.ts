@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { BookingsComponent } from './components/bookings/bookings.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { AuthGuard } from './guards/auth.guard';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -12,11 +13,12 @@ const routes: Routes = [
     component: WrapperComponent,
     children: [
       {path: '', component: HomeComponent},
+      {path: 'PageNotFound', component: NotFoundComponent},
       { path: 'bookings', component: BookingsComponent, canActivate: [AuthGuard]},
       {path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard]},
     ]
   },
-  {path: '**', redirectTo: ''}
+  {path: '**', redirectTo: 'PageNotFound'}
 ];
 
 @NgModule({

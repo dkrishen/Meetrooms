@@ -33,6 +33,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { SelectDateDialogBoxComponent } from './components/select-date-dialog-box/select-date-dialog-box.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export function tokenGetter(){
   return localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -52,7 +53,8 @@ FullCalendarModule.registerPlugins([
     NavMenuComponent,
     SideMenuComponent,
     CalendarComponent,
-    SelectDateDialogBoxComponent
+    SelectDateDialogBoxComponent,
+    NotFoundComponent
   ],
   imports: [
     FullCalendarModule,
