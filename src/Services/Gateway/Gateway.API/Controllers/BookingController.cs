@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Gateway.API.Logic;
 
 namespace MRA.Gateway.Controllers
 {
@@ -20,17 +21,20 @@ namespace MRA.Gateway.Controllers
         IUserRepository _userRepository;
         IBookingRepository _bookingRepository;
         IMapper _mapper;
+        IBookingLogic _bookingLogic;
 
         public BookingController(
             IMeetingRoomRepository meetingRoomRepository, 
             IUserRepository userRepository, 
             IBookingRepository bookingRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IBookingLogic bookingLogic)
         {
             _meetingRoomRepository = meetingRoomRepository;
             _userRepository = userRepository;
             _bookingRepository = bookingRepository;
             _mapper = mapper;
+            _bookingLogic = bookingLogic;
         }
 
         [HttpGet]
@@ -39,28 +43,29 @@ namespace MRA.Gateway.Controllers
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var bookings = (await _bookingRepository
-                .GetBookingsAsync(authorizationHeaderValue)).ToList();
+                .GetBookingsAsync(authorizationHeaderValue))
+                .ToList();
             
-            var roomIds = bookings.Select(o => o.MeetingRoomId).ToHashSet<Guid>();
-            var rooms = (await _meetingRoomRepository
-                .GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue)).ToList();
+            var roomIds = bookings
+                .Select(o => o.MeetingRoomId)
+                .ToHashSet<Guid>();
 
-            var userIds = bookings.Select(o => o.UserId).ToHashSet<Guid>();
-            var users = (await _userRepository
-                .GetUsersByIdsAsync(userIds, authorizationHeaderValue)).ToList();
+            var userIds = bookings
+                .Select(o => o.UserId)
+                .ToHashSet<Guid>();
 
-            var result = new List<BookingViewModel>();
-            foreach (var booking in bookings)
-            {
-                var bookingViewModel = _mapper.Map<BookingViewModel>(booking);
-                bookingViewModel.Username = users?
-                    .Where(u => u.Id == booking.UserId)?
-                    .SingleOrDefault()?.Username ?? "[DELETED USER]";
-                bookingViewModel.MeetingRoomName = rooms?
-                    .Where(r => r.Id == booking.MeetingRoomId)?
-                    .FirstOrDefault()?.Name ?? "[DELETED ROOM]";
-                result.Add(bookingViewModel);
-            }
+            var roomsRequest = _meetingRoomRepository
+                .GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue);
+            var usersRequest = _userRepository
+                .GetUsersByIdsAsync(userIds, authorizationHeaderValue);
+
+            Task.WaitAll();
+
+            var rooms = roomsRequest.Result.ToList();
+            var users = usersRequest.Result.ToList();
+
+            var result = _bookingLogic.ComposeBookingViewModels(
+                bookings, users, rooms).ToList();
 
             return Ok(result);
         }
@@ -71,27 +76,28 @@ namespace MRA.Gateway.Controllers
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            
             var bookings = (await _bookingRepository
-                .GetBookingsByUserAsync(userId, authorizationHeaderValue)).ToList();
+                .GetBookingsByUserAsync(userId, authorizationHeaderValue))
+                .ToList();
 
-            var roomIds = bookings.Select(o => o.MeetingRoomId).ToHashSet<Guid>();
-            var rooms = (await _meetingRoomRepository
-                .GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue)).ToList();
+            var roomIds = bookings
+                .Select(o => o.MeetingRoomId)
+                .ToHashSet<Guid>();
 
-            var user = (await _userRepository
-                .GetUsersByIdsAsync(new HashSet<Guid>() { userId }, authorizationHeaderValue))
-                .FirstOrDefault();
+            var roomsRequest = _meetingRoomRepository
+                .GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue);
 
-            var result = new List<BookingViewModel>();
-            foreach (var booking in bookings)
-            {
-                var bookingViewModel = _mapper.Map<BookingViewModel>(booking);
-                bookingViewModel.Username = user?.Username ?? "[ERROR]";
-                bookingViewModel.MeetingRoomName = rooms?
-                    .Where(r => r.Id == booking.MeetingRoomId)?
-                    .FirstOrDefault()?.Name ?? "[DELETED ROOM]";
-                result.Add(bookingViewModel);
-            }
+            var userRequest = _userRepository
+                .GetUsersByIdsAsync(new HashSet<Guid>() { userId }, authorizationHeaderValue);
+
+            Task.WaitAll();
+
+            var rooms = roomsRequest.Result.ToList();
+            var user = userRequest.Result.FirstOrDefault();
+
+            var result = _bookingLogic.ComposeBookingViewModels(
+                bookings, user, rooms).ToList();
 
             return Ok(result);
         }

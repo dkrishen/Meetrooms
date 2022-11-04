@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MRA.Gateway.Models;
+using Gateway.API.Logic;
 
 namespace MRA.Gateway
 {
@@ -58,6 +59,7 @@ namespace MRA.Gateway
             services.AddTransient<IMeetingRoomRepository, MeetingRoomRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBookingRepository, BookingRepository>();
+            services.AddTransient<IBookingLogic, BookingLogic>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
