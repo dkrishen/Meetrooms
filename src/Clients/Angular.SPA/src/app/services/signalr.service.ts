@@ -15,10 +15,14 @@ export class SignalRService {
     private authService: AuthService,
     @Inject(SIGNALR_HUB_URL) private signalrUrl: string  ) { }
 
-  private _trigger = new Subject<void>();
-  get trigger$() {
-    return this._trigger.asObservable();
-  }
+    private _notificationTrigger = new Subject<void>();
+    private _updateTrigger = new Subject<void>();
+    get notificationTrigger$() {
+      return this._notificationTrigger.asObservable();
+    }
+    get updateTrigger$() {
+      return this._updateTrigger.asObservable();
+    }
 
   public start(){
     if(this.isConnected()){
@@ -32,6 +36,7 @@ export class SignalRService {
 
       this.startConnection();
       this.addNotificationListener();
+      this.addUpdateListener();
 
       console.log("the hub has just been connected")
   }
@@ -53,7 +58,13 @@ export class SignalRService {
   
   public addNotificationListener = () => {
     this.notificationHubConnection?.on('SendNotificationAsync', (notification) => {
-      this._trigger.next(notification);
+      this._notificationTrigger.next(notification);
+    });
+  }
+  
+  public addUpdateListener = () => {
+    this.notificationHubConnection?.on('UpdateCalendarAsync', () => {
+      this._updateTrigger.next();
     });
   }
 

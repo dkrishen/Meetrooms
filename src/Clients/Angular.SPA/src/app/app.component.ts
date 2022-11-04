@@ -18,12 +18,12 @@ export class AppComponent {
   }
 
   @HostListener('window:beforeunload')
-  async unsubscribeFromNotifications() {
+  async unsubscribeFromNotificationHub() {
     this.signalrService.stop();
   }
 
   ngOnInit() {
-    this.signalrService.trigger$.subscribe((notificationJson) => {
+    this.signalrService.notificationTrigger$.subscribe((notificationJson) => {
       var notification = JSON.parse(''+notificationJson);
 
       if(notification.Successfully){
@@ -34,6 +34,10 @@ export class AppComponent {
       }
 
       setTimeout(this.resetPage, 3000)
+    });
+    
+    this.signalrService.updateTrigger$.subscribe(() => {
+      this.resetPage();
     });
   }
   

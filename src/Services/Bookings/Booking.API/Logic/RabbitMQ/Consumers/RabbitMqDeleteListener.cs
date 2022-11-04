@@ -43,7 +43,8 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
             {
                 notification = new NotificationDto()
                 {
-                    Message = $"Your booking at {booking.StartTime.ToString()} has not been removed!",
+                    // crutch for fix exception if you delete an booking several times at the same time
+                    Message = $"Your booking at {booking?.StartTime.ToString() ?? string.Empty} has not been removed!", 
                     Successfully = false
                 };
             }
