@@ -9,6 +9,19 @@ volumes:
     external: true
 
 services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    hostname: rabbitmqserver
+    environment:
+      - RABBITMQ_DEFAULT_USER=RabbitMqUser
+      - RABBITMQ_DEFAULT_PASS=RabbitMqPassword
+    ports:
+      # AMQP protocol port
+      - '5500:5672'
+      # HTTP management UI
+      - '5510:15672'
+
   bookingdbserver:
     image: mysql:8.0.30
     container_name: bookingsdbserver
@@ -41,7 +54,6 @@ services:
       - 5210:3306
     volumes:
       - booking_data:/var/lib/mysql
-    restart: always
 
   roomdbserver:
     image: mysql:8.0.30
@@ -75,7 +87,6 @@ services:
       - 5310:3306
     volumes:
       - room_data:/var/lib/mysql
-    restart: always
 
   identitydbserver:
     image: mysql:8.0.30
@@ -109,11 +120,10 @@ services:
       - 5010:3306
     volumes:
       - identity_data:/var/lib/mysql
-    restart: always
 
   identity.api:
     container_name: identity
-    image: ${DOCKER_REGISTRY-}identityapi
+    image: ${DOCKER_REGISTRY-}identity
     build: ../src/Services/Identity/Identity.API
     ports:
       - 5000:80
@@ -121,21 +131,22 @@ services:
       - identitydbserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-    restart: always
 
   gateway.api:
     container_name: gateway
-    image: ${DOCKER_REGISTRY-}gatewayapi
+    image: ${DOCKER_REGISTRY-}gateway
     build: ../src/Services/Gateway/Gateway.API
     ports:
       - 5100:80
+    depends_on:
+      - rabbitmq
+      - signalr.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-    restart: always
 
   user.api:
     container_name: users
-    image: ${DOCKER_REGISTRY-}userapi
+    image: ${DOCKER_REGISTRY-}users
     build: ../src/Services/Users/User.API
     ports:
       - 5020:80
@@ -143,11 +154,10 @@ services:
       - identitydbserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-    restart: always
 
   room.api:
     container_name: rooms
-    image: ${DOCKER_REGISTRY-}roomapi
+    image: ${DOCKER_REGISTRY-}rooms
     build: ../src/Services/Rooms/Room.API
     ports:
       - 5300:80
@@ -155,26 +165,36 @@ services:
         - roomdbserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-    restart: always
 
   booking.api:
     container_name: bookings
-    image: ${DOCKER_REGISTRY-}bookingapi
+    image: ${DOCKER_REGISTRY-}bookings
     build: ../src/Services/Bookings/Booking.API
     ports:
       - 5200:80
     depends_on:
-      - bookingdbserver
+      - rabbitmq
+      - signalr.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-    restart: always
+
+  signalr.api:
+    container_name: signalr
+    image: ${DOCKER_REGISTRY-}signalr
+    build: ../src/Services/SignalR/SignalR.API
+    ports:
+      - 5400:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
 
   angular.spa:
     container_name: spa
-    image: ${DOCKER_REGISTRY-}angularspa
+    image: ${DOCKER_REGISTRY-}angular
     build: ../src/Clients/Angular.SPA
     ports:
       - 4200:80
+    depends_on:
+      - rabbitmq
+      - signalr.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-    restart: always

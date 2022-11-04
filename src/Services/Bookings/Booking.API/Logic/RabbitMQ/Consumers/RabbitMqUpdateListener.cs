@@ -16,6 +16,9 @@ namespace MRA.Bookings.Logic.RabbitMQ.Consumers
         public override void Configure(IConfiguration configuration)
         {
             this.hostName = configuration.GetSection("RabbitMQ").GetValue<string>("HostName");
+            this.port = configuration.GetSection("RabbitMQ").GetValue<int>("Port");
+            this.userName = configuration.GetSection("RabbitMQ").GetValue<string>("UserName");
+            this.password = configuration.GetSection("RabbitMQ").GetValue<string>("Password");
             this.exchangeName = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeName");
             this.exchangeType = configuration.GetSection("RabbitMQ").GetValue<string>("ExchangeType");
             this.queueName = configuration.GetSection("RabbitMQ").GetValue<string>("UpdateQueueName");

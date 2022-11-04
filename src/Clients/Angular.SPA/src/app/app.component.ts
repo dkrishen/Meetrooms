@@ -26,9 +26,6 @@ export class AppComponent {
     this.signalrService.trigger$.subscribe((notificationJson) => {
       var notification = JSON.parse(''+notificationJson);
 
-      console.log(notification)
-      debugger;
-
       if(notification.Successfully){
         this.showSuccess('' + notification.Message);
       }
