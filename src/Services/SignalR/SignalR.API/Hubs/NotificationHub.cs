@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
- using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SignalR.API.Hubs
@@ -58,6 +58,18 @@ namespace SignalR.API.Hubs
                     .Connections
                     .Select(x => x.ConnectionId))
                 .SendNotificationAsync(notification);
+        }
+
+        public async Task UpdateCalendarAsync()
+        {
+            var userName = Context.User?.Identity?.Name ?? "Anonymous";
+            await Clients
+                .Clients(chatManager
+                    .Users
+                    .Where(x => x.UserName != userName)
+                    .SelectMany(x => x.Connections)
+                    .Select(x => x.ConnectionId))
+                .UpdateCalendarAsync();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace MRA.Gateway
+﻿namespace MRA.Gateway.Models
 {
     public class AuthOptions
     {

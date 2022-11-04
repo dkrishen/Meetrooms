@@ -7,5 +7,6 @@ namespace SignalR.API.Hubs
     {
         Task SendNotificationAsync(string notification);
         Task UpdateUsersAsync(IEnumerable<string> users);
+        Task UpdateCalendarAsync();
     }
 }

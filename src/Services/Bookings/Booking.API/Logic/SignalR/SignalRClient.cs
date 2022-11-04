@@ -24,12 +24,11 @@ namespace MRA.Bookings.Logic.SignalR
                 })
                 .WithAutomaticReconnect()
                 .Build();
-
-            connection.StartAsync().GetAwaiter().GetResult();
-
             try
             {
+                connection.StartAsync().GetAwaiter().GetResult();
                 await connection.SendAsync("SendNotificationAsync", message);
+                await connection.SendAsync("UpdateCalendarAsync");
                 connection.StopAsync().GetAwaiter().GetResult();
             }
             catch (Exception exception)
