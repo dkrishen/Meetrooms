@@ -86,7 +86,7 @@
               "namedChunks": true
             }
           },
-          "defaultConfiguration": "docker"
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

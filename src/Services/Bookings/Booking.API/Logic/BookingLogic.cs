@@ -74,9 +74,9 @@ namespace MRA.Bookings.Logic
 
         private bool CheckCollision(Booking first, Booking second)
         {
-            if ((first.StartTime >= second.StartTime && first.StartTime <= second.EndTime) ||
-              (first.EndTime >= second.StartTime && first.EndTime <= second.EndTime) ||
-              (second.StartTime >= first.StartTime && second.StartTime <= first.EndTime))
+            if ((first.StartTime >= second.StartTime && first.StartTime < second.EndTime) ||
+              (first.EndTime <= second.EndTime && first.EndTime > second.StartTime) ||
+              (second.StartTime > first.StartTime && second.EndTime < first.EndTime))
             {
                 return true;
             }

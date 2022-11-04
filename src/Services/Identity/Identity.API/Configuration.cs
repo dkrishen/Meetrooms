@@ -76,25 +76,6 @@ namespace MRA.Identity
             {
                 new Client
                 {
-                    ClientId = "oidcMVCApp",
-                    ClientName = "MRA.Mvc",
-                    ClientSecrets = new List<Secret> {new Secret("MvcSecret".Sha256())},
-
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string> {"https://localhost:44393/signin-oidc"},
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        IdentityServerConstants.LocalApi.ScopeName,
-                        "my_scope"
-                    },
-                    RequirePkce = true,
-                    AllowPlainTextPkce = false
-                },
-                new Client
-                {
                     ClientId = "MRAAngular",
                     ClientName = "MRA.Angular",
                     ClientSecrets = new List<Secret> {new Secret("AngularSecret".Sha256())},
@@ -113,6 +94,7 @@ namespace MRA.Identity
                     RequirePkce = true,
                     AllowPlainTextPkce = false,
                     AllowedCorsOrigins = { AppSettings.GetValue<string>("AngularUrl")},
-                },
+                }
+            };
     }
 }

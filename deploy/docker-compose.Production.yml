@@ -1,34 +1,53 @@
 version: '3.4'
 
 services:
+  rabbitmq:
+    restart: always
+
   bookingdbserver:
     volumes:
       - booking_data:/MRA/bookingdb
+    restart: always
 
   roomdbserver:
     volumes:
       - room_data:/MRA/roomdb
+    restart: always
 
   identitydbserver:
     volumes:
       - identity_data:/MRA/identitydb
+    restart: always
 
   user.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
 
   room.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
 
   identity.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
 
   gateway.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-
+    restart: always
+      
   booking.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
+
+  signalr.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
+
+  angular.spa:
+    restart: always

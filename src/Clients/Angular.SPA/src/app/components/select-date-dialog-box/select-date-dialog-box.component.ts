@@ -88,10 +88,10 @@ export class SelectDateDialogBoxComponent implements OnInit {
 
     var collision = dayBookings?.filter(booking => {
         if(data.startTime != undefined && data.endTime != undefined){
-          if (((data.startTime > booking.startTime && data.startTime < booking.endTime)||
-            (data.endTime > booking.startTime && data.endTime < booking.endTime) ||
-            (booking.startTime > data.startTime && booking.startTime < data.endTime))&&
-            !(booking.startTime == this.previousStartTime && booking.endTime==this.previousEndTime)){
+          if (((data.startTime >= booking.startTime && data.startTime < booking.endTime) ||
+              (data.endTime <= booking.endTime && data.endTime > booking.startTime) ||
+              (booking.startTime > data.startTime && booking.endTime < data.endTime)) &&
+              !(booking.startTime == this.previousStartTime && booking.endTime==this.previousEndTime)){
             return true;
           }
           else return false;
