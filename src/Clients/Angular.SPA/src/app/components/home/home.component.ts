@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Booking } from 'src/app/models/booking';
-import { BookingService } from 'src/app/services/booking.service';
 
 @Component({
   selector: 'app-home',
@@ -9,15 +7,9 @@ import { BookingService } from 'src/app/services/booking.service';
 })
 export class HomeComponent implements OnInit {
 
-  bookings: Booking[] = []
-  columns = ['meetingRoomName', 'username', 'date', 'startTime', 'endTime']
-
-  constructor(private bookingService: BookingService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.bookingService.getAllBookings()
-      .subscribe(res => {
-        this.bookings = res
-      })
+
   }
 }
