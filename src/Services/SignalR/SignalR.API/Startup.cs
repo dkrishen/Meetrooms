@@ -1,10 +1,13 @@
+using IdentityModel.AspNetCore.OAuth2Introspection;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SignalR.API.Hubs;
+using System;
 using System.Threading.Tasks;
 
 namespace SignalR.API
@@ -63,6 +66,12 @@ namespace SignalR.API
                     options.Authority = $"{identityUrl}";
                     options.EnableCaching = true;
                     options.RequireHttpsMetadata = false;
+                    options.TokenRetriever = new Func<HttpRequest, string>(req =>
+                    {
+                        var fromHeader = TokenRetrieval.FromAuthorizationHeader();
+                        var fromQuery = TokenRetrieval.FromQueryString();
+                        return fromHeader(req) ?? fromQuery(req);
+                    });
                 });
 
             services.AddAuthorization();
