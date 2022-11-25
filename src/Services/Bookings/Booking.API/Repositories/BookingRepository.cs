@@ -56,7 +56,7 @@ namespace MRA.Bookings.Repositories
                 .ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Booking>> GetBookingsByUserAsync(Guid userId)
+        public async Task<IEnumerable<Booking>> GetBookingsByUserIdAsync(Guid userId)
         {
             return await context.Bookings
                 .Where(b => b.UserId == userId)
@@ -79,8 +79,10 @@ namespace MRA.Bookings.Repositories
                 }
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine();
                 return false;
             }
         }
