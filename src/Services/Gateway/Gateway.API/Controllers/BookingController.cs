@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using MRA.Gateway.Models;
-using MRA.Gateway.Repository;
+﻿using MRA.Gateway.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,23 +14,11 @@ namespace MRA.Gateway.Controllers
     [ApiController]
     public class BookingController : Controller
     {
-        IMeetingRoomRepository _meetingRoomRepository;
-        IUserRepository _userRepository;
-        IBookingRepository _bookingRepository;
-        IMapper _mapper;
         IBookingLogic _bookingLogic;
 
         public BookingController(
-            IMeetingRoomRepository meetingRoomRepository, 
-            IUserRepository userRepository, 
-            IBookingRepository bookingRepository,
-            IMapper mapper,
             IBookingLogic bookingLogic)
         {
-            _meetingRoomRepository = meetingRoomRepository;
-            _userRepository = userRepository;
-            _bookingRepository = bookingRepository;
-            _mapper = mapper;
             _bookingLogic = bookingLogic;
         }
 
@@ -42,30 +27,8 @@ namespace MRA.Gateway.Controllers
         public async Task<IActionResult> GetAllBookingsAsync()
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            var bookings = (await _bookingRepository
-                .GetBookingsAsync(authorizationHeaderValue))
-                .ToList();
-            
-            var roomIds = bookings
-                .Select(o => o.MeetingRoomId)
-                .ToHashSet<Guid>();
-
-            var userIds = bookings
-                .Select(o => o.UserId)
-                .ToHashSet<Guid>();
-
-            var roomsRequest = _meetingRoomRepository
-                .GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue);
-            var usersRequest = _userRepository
-                .GetUsersByIdsAsync(userIds, authorizationHeaderValue);
-
-            Task.WaitAll();
-
-            var rooms = roomsRequest.Result.ToList();
-            var users = usersRequest.Result.ToList();
-
-            var result = _bookingLogic.ComposeBookingViewModels(
-                bookings, users, rooms).ToList();
+            var result = (await _bookingLogic.GetBookingsAsync(
+                authorizationHeaderValue)).ToList();
 
             return Ok(result);
         }
@@ -77,27 +40,8 @@ namespace MRA.Gateway.Controllers
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
             
-            var bookings = (await _bookingRepository
-                .GetBookingsByUserAsync(userId, authorizationHeaderValue))
-                .ToList();
-
-            var roomIds = bookings
-                .Select(o => o.MeetingRoomId)
-                .ToHashSet<Guid>();
-
-            var roomsRequest = _meetingRoomRepository
-                .GetRoomsByRoomIdsAsync(roomIds, authorizationHeaderValue);
-
-            var userRequest = _userRepository
-                .GetUsersByIdsAsync(new HashSet<Guid>() { userId }, authorizationHeaderValue);
-
-            Task.WaitAll();
-
-            var rooms = roomsRequest.Result.ToList();
-            var user = userRequest.Result.FirstOrDefault();
-
-            var result = _bookingLogic.ComposeBookingViewModels(
-                bookings, user, rooms).ToList();
+            var result = (await _bookingLogic.GetBookingsByUserIdAsync(
+                userId, authorizationHeaderValue)).ToList();
 
             return Ok(result);
         }
@@ -109,13 +53,8 @@ namespace MRA.Gateway.Controllers
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             var userId = Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
             
-            var newBooking = _mapper.Map<Booking>(booking);
-            // temporary GUID the single meeting room (have not ability for select rooms at the moment)
-            newBooking.MeetingRoomId = new Guid("1DDA7260-08E8-4B32-A9EE-F7E1CA69BC9C");  
-            newBooking.UserId = userId;
-
-            bool result = _bookingRepository
-                .AddBooking(newBooking, authorizationHeaderValue);
+            bool result = _bookingLogic
+                .AddBooking(booking, userId, authorizationHeaderValue);
             return Ok(result);
         }
 
@@ -124,7 +63,7 @@ namespace MRA.Gateway.Controllers
         public IActionResult DeleteBookingAsync([FromBody] GuidDto data)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            bool result = _bookingRepository
+            bool result = _bookingLogic
                 .DeleteBooking(data.id, authorizationHeaderValue);
             return Ok(result);
         }
@@ -134,8 +73,8 @@ namespace MRA.Gateway.Controllers
         public IActionResult UpdateBookingAsync([FromBody] BookingEditDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
-            bool result = _bookingRepository
-                .UpdateBooking(_mapper.Map<Booking>(booking), authorizationHeaderValue);
+            bool result = _bookingLogic
+                .UpdateBooking(booking, authorizationHeaderValue);
             return Ok(result);
         }
     }

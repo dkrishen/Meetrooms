@@ -1,5 +1,6 @@
 ﻿using MRA.Bookings.Models;
 using MRA.Bookings.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +82,16 @@ namespace MRA.Bookings.Logic
                 return true;
             }
             else return false;
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsAsync()
+        {
+            return await _bookingRepository.GetBookingsAsync();
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsByUserIdAsync(Guid userId)
+        {
+            return await _bookingRepository.GetBookingsByUserIdAsync(userId);
         }
     }
 }
