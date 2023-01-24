@@ -23,7 +23,7 @@ namespace MRA.Gateway.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllBookings")]
+        [Route("All")]
         public async Task<IActionResult> GetAllBookingsAsync()
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
@@ -34,7 +34,7 @@ namespace MRA.Gateway.Controllers
         }
 
         [HttpGet]
-        [Route("GetBookingsByUser")]
+        [Route("My")]
         public async Task<IActionResult> GetBookingsByUserAsync()
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
@@ -47,7 +47,6 @@ namespace MRA.Gateway.Controllers
         }
 
         [HttpPost]
-        [Route("AddBooking")]
         public IActionResult AddBookingAsync([FromBody] BookingInputDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
@@ -59,7 +58,6 @@ namespace MRA.Gateway.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteBooking")]
         public IActionResult DeleteBookingAsync([FromBody] GuidDto data)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
@@ -69,7 +67,6 @@ namespace MRA.Gateway.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateBooking")]
         public IActionResult UpdateBookingAsync([FromBody] BookingEditDto booking)
         {
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();

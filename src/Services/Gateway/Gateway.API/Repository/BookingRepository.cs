@@ -31,14 +31,14 @@ namespace MRA.Gateway.Repository
         public async Task<IEnumerable<Booking>> GetBookingsAsync(string token)
         {
             return await Request.Get
-                .SendAsync<IEnumerable<Booking>>("api/Booking/GetAllBookings", token)
+                .SendAsync<IEnumerable<Booking>>("api/Booking/AllBookings", token)
                 .ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Booking>> GetBookingsByUserAsync(Guid id, string token)
         {
             return await Request.Get
-                .SendAsync<IEnumerable<Booking>>("api/Booking/GetBookingsByUserId", token, id)
+                .SendAsync<IEnumerable<Booking>>("api/Booking/BookingsByUserId", token, id)
                 .ConfigureAwait(false);
         }
 

@@ -19,14 +19,14 @@ namespace MRA.Rooms.Controllers
             => this.roomRepository = roomRepository;
 
         [HttpGet]
-        [Route("GetAllRooms")]
+        [Route("AllRooms")]
         public async Task<IActionResult> GetAllRoomsAsync()
         {
             return Ok(await roomRepository.GetRoomsAsync());
         }
 
         [HttpGet]
-        [Route("GetRoomById")]
+        [Route("RoomById")]
         public async Task<IActionResult> GetRoomByIdAsync(string data)
         {
             Guid roomId = JsonConvert.DeserializeObject<Guid>(data);
@@ -34,7 +34,7 @@ namespace MRA.Rooms.Controllers
         }
 
         [HttpGet]
-        [Route("GetRoomsByIds")]
+        [Route("RoomsByIds")]
         public async Task<IActionResult> GetRoomsByIdsAsync(string data)
         {
             var roomIds = JsonConvert.DeserializeObject<IEnumerable<Guid>>(data);

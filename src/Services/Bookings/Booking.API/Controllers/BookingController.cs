@@ -25,7 +25,7 @@ namespace MRA.Bookings.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllBookings")]
+        [Route("AllBookings")]
         public async Task<IActionResult> GetBookingsAsync()
         {
             var bookings = await _bookingLogic.GetBookingsAsync();
@@ -33,7 +33,7 @@ namespace MRA.Bookings.Controllers
         }
 
         [HttpGet]
-        [Route("GetBookingsByUserId")]
+        [Route("BookingsByUserId")]
         public async Task<IActionResult> GetBookingsByUserIdAsync(string data)
         {
             Guid userId = JsonConvert.DeserializeObject<Guid>(data);
