@@ -28,7 +28,6 @@ namespace MRA.Bookings.Logic.SignalR
             {
                 connection.StartAsync().GetAwaiter().GetResult();
                 await connection.SendAsync("SendNotificationAsync", message);
-                await connection.SendAsync("UpdateCalendarAsync");
                 connection.StopAsync().GetAwaiter().GetResult();
             }
             catch (Exception exception)

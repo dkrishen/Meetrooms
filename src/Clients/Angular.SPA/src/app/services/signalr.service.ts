@@ -69,8 +69,8 @@ export class SignalRService {
     });
   }
 
-  public callNotification(message: string){
-
+  public callNotification(notification: any){
+    this._notificationTrigger.next(notification);
   }
   
   public stop() {
