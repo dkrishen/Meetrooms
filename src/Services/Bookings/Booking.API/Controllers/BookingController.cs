@@ -39,29 +39,5 @@ namespace MRA.Bookings.Controllers
             Guid userId = JsonConvert.DeserializeObject<Guid>(data);
             return Ok(await _bookingLogic.GetBookingsByUserIdAsync(userId));
         }
-
-        [HttpPost]
-        [Route("AddBooking")]
-        public async Task<IActionResult> AddBookingAsync([FromBody] Booking data)
-        {
-            await _bookingLogic.AddBookingAsync(data);
-            return Ok(true);
-        }
-
-        [HttpDelete]
-        [Route("deleteBooking")]
-        public async Task<IActionResult> DeleteBookingAsync([FromBody] Guid data)
-        {
-           await _bookingLogic.DeleteBookingAsync(data);
-            return Ok(true);
-        }
-
-        [HttpPut]
-        [Route("updateBooking")]
-        public async Task<IActionResult> UpdateBookingAsync([FromBody] Booking data)
-        {
-            await _bookingLogic.UpdateBookingAsync(data);
-            return Ok(true);
-        }
     }
 }

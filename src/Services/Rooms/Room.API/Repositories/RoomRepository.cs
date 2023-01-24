@@ -16,19 +16,19 @@ namespace MRA.Rooms.Repositories
         {
             return await context.Rooms
                 .Where(r => r.Id == id)
-                .SingleOrDefaultAsync().ConfigureAwait(false); ;
+                .SingleOrDefaultAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Room>> GetRoomsAsync()
         {
-            return await context.Rooms.ToListAsync().ConfigureAwait(false); ;
+            return await context.Rooms.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Room>> GetRoomsByIdsAsync(IEnumerable<Guid> ids)
         {
             return await context.Rooms
                 .Where(r => ids.Contains(r.Id))
-                .ToListAsync().ConfigureAwait(false); ;
+                .ToListAsync().ConfigureAwait(false);
         }
     }
 }

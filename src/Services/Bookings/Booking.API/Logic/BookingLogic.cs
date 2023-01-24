@@ -24,7 +24,7 @@ namespace MRA.Bookings.Logic
 
         public async Task<bool> AddBookingAsync(Booking booking)
         {
-            if (await validateBooking(booking))
+            if (await ValidateBooking(booking))
             {
                 return await _bookingRepository.AddBookingAsync(booking);
             }
@@ -34,7 +34,7 @@ namespace MRA.Bookings.Logic
 
         public async Task<bool> UpdateBookingAsync(Booking booking)
         {
-            if (await validateBooking(booking))
+            if (await ValidateBooking(booking))
             {
                 return await _bookingRepository.UpdateBookingAsync(booking);
             }
@@ -47,18 +47,28 @@ namespace MRA.Bookings.Logic
             return await _bookingRepository.DeleteBookingAsync(id);
         }
 
-        private async Task<bool> validateBooking(Booking booking)
+        public async Task<IEnumerable<Booking>> GetBookingsAsync()
+        {
+            return await _bookingRepository.GetBookingsAsync();
+        }
+
+        public async Task<IEnumerable<Booking>> GetBookingsByUserIdAsync(Guid userId)
+        {
+            return await _bookingRepository.GetBookingsByUserIdAsync(userId);
+        }
+
+        private async Task<bool> ValidateBooking(Booking booking)
         {
             var allBookings = await _bookingRepository.GetBookingsAsync();
-            var collision = FindCollision(allBookings, booking).ToList();
+            var collisions = FindCollisions(allBookings, booking).ToList();
             var currentBooking = await _bookingRepository.GetBookingByIdAsync(booking.Id);
 
             if(currentBooking != null)
             {
-                collision.Remove(currentBooking);
+                collisions.Remove(currentBooking);
             }
 
-            if (collision?.Count() != 0)
+            if (collisions?.Count() != 0)
             {
                 return false;
             }
@@ -66,7 +76,7 @@ namespace MRA.Bookings.Logic
             return true;
         }
 
-        private IEnumerable<Booking> FindCollision(IEnumerable<Booking> allBookings, Booking booking)
+        private IEnumerable<Booking> FindCollisions(IEnumerable<Booking> allBookings, Booking booking)
         {
             return allBookings
                 .Where(b => b.Date == booking.Date)
@@ -82,16 +92,6 @@ namespace MRA.Bookings.Logic
                 return true;
             }
             else return false;
-        }
-
-        public async Task<IEnumerable<Booking>> GetBookingsAsync()
-        {
-            return await _bookingRepository.GetBookingsAsync();
-        }
-
-        public async Task<IEnumerable<Booking>> GetBookingsByUserIdAsync(Guid userId)
-        {
-            return await _bookingRepository.GetBookingsByUserIdAsync(userId);
         }
     }
 }

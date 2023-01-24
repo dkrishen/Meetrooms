@@ -24,7 +24,7 @@ namespace SignalR.API.Hubs
 
         public bool DisconnectUser(string connectionId)
         {
-            var userExists = GetConnectedUserById(connectionId);
+            var userExists = GetUserByConnectionId(connectionId);
             if (userExists == null)
             {
                 return false;
@@ -51,7 +51,7 @@ namespace SignalR.API.Hubs
             return false;
         }
 
-        private ChatUser GetConnectedUserById(string connectionId)
+        private ChatUser GetUserByConnectionId(string connectionId)
         {
             return Users
                 .FirstOrDefault(x => x.Connections.Select(c => c.ConnectionId)

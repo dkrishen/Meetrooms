@@ -18,7 +18,7 @@ namespace MRA.Users.Repositories
         {
             return await context.Users
                 .Select(u => new UserShortDto() { Id = u.Id, Username = u.UserName })
-                .ToListAsync().ConfigureAwait(false); ;
+                .ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<UserShortDto>> GetUsersByIdsAsync(IEnumerable<string> ids)
@@ -26,7 +26,7 @@ namespace MRA.Users.Repositories
             return await context.Users
                 .Select(u => new UserShortDto() { Id = u.Id, Username = u.UserName })
                 .Where(u => ids.Contains(u.Id))
-                .ToListAsync().ConfigureAwait(false); ;
+                .ToListAsync().ConfigureAwait(false);
         }
     }
 }

@@ -11,17 +11,18 @@ namespace Gateway.API.Logic
     public class BookingLogic : IBookingLogic
     {
         IMapper _mapper;
-        IMeetingRoomRepository _meetingRoomRepository;
+        IRoomRepository _roomRepository;
         IUserRepository _userRepository;
         IBookingRepository _bookingRepository;
+        
         public BookingLogic(
             IMapper mapper,
-            IMeetingRoomRepository meetingRoomRepository,
+            IRoomRepository roomRepository,
             IUserRepository userRepository,
             IBookingRepository bookingRepository)
         {
             _mapper = mapper;
-            _meetingRoomRepository = meetingRoomRepository;
+            _roomRepository = roomRepository;
             _userRepository = userRepository;
             _bookingRepository = bookingRepository;
         }
@@ -98,7 +99,7 @@ namespace Gateway.API.Logic
                 .Select(o => o.UserId)
                 .ToHashSet<Guid>();
 
-            var roomsRequest = _meetingRoomRepository
+            var roomsRequest = _roomRepository
                 .GetRoomsByRoomIdsAsync(roomIds, token);
             var usersRequest = _userRepository
                 .GetUsersByIdsAsync(userIds, token);
@@ -122,7 +123,7 @@ namespace Gateway.API.Logic
                 .Select(o => o.MeetingRoomId)
                 .ToHashSet<Guid>();
 
-            var roomsRequest = _meetingRoomRepository
+            var roomsRequest = _roomRepository
                 .GetRoomsByRoomIdsAsync(roomIds, token);
 
             var userRequest = _userRepository

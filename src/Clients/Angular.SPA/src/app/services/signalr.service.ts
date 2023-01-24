@@ -17,6 +17,7 @@ export class SignalRService {
 
     private _notificationTrigger = new Subject<void>();
     private _updateTrigger = new Subject<void>();
+
     get notificationTrigger$() {
       return this._notificationTrigger.asObservable();
     }
@@ -34,11 +35,11 @@ export class SignalRService {
       return;
     }
 
-      this.startConnection();
-      this.addNotificationListener();
-      this.addUpdateListener();
+    this.startConnection();
+    this.addUpdateListener();
+    this.addNotificationListener();
 
-      console.log("the hub has just been connected")
+    console.log("the hub has just been connected")
   }
 
   public startConnection = () => {
