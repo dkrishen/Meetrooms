@@ -39,46 +39,6 @@ namespace Gateway.API.Logic
                 .AddBooking(newBooking, token);
         }
 
-        private IEnumerable<BookingViewModel> ComposeBookingViewModels(
-            IEnumerable<Booking> bookings,
-            IEnumerable<UserShortDto> users,
-            IEnumerable<MeetingRoom> rooms)
-        {
-            var result = new List<BookingViewModel>();
-            foreach (var booking in bookings)
-            {
-                var bookingViewModel = _mapper.Map<BookingViewModel>(booking);
-                bookingViewModel.Username = users?
-                    .Where(u => u.Id == booking.UserId)?
-                    .FirstOrDefault()?.Username ?? "[DELETED USER]";
-                bookingViewModel.MeetingRoomName = rooms?
-                    .Where(r => r.Id == booking.MeetingRoomId)?
-                    .FirstOrDefault()?.Name ?? "[DELETED ROOM]";
-                result.Add(bookingViewModel);
-            }
-
-            return result;
-        }
-
-        private IEnumerable<BookingViewModel> ComposeBookingViewModels(
-            IEnumerable<Booking> bookings,
-            UserShortDto user,
-            IEnumerable<MeetingRoom> rooms)
-        {
-            var result = new List<BookingViewModel>();
-            foreach (var booking in bookings)
-            {
-                var bookingViewModel = _mapper.Map<BookingViewModel>(booking);
-                bookingViewModel.Username = user?.Username ?? "[ERROR]";
-                bookingViewModel.MeetingRoomName = rooms?
-                    .Where(r => r.Id == booking.MeetingRoomId)?
-                    .FirstOrDefault()?.Name ?? "[DELETED ROOM]";
-                result.Add(bookingViewModel);
-            }
-
-            return result;
-        }
-
         public bool DeleteBooking(Guid id, string token)
         {
             return _bookingRepository
@@ -142,6 +102,46 @@ namespace Gateway.API.Logic
         {
             return _bookingRepository
                 .UpdateBooking(_mapper.Map<Booking>(booking), token);
+        }
+
+        private IEnumerable<BookingViewModel> ComposeBookingViewModels(
+            IEnumerable<Booking> bookings,
+            IEnumerable<UserShortDto> users,
+            IEnumerable<MeetingRoom> rooms)
+        {
+            var result = new List<BookingViewModel>();
+            foreach (var booking in bookings)
+            {
+                var bookingViewModel = _mapper.Map<BookingViewModel>(booking);
+                bookingViewModel.Username = users?
+                    .Where(u => u.Id == booking.UserId)?
+                    .FirstOrDefault()?.Username ?? "[DELETED USER]";
+                bookingViewModel.MeetingRoomName = rooms?
+                    .Where(r => r.Id == booking.MeetingRoomId)?
+                    .FirstOrDefault()?.Name ?? "[DELETED ROOM]";
+                result.Add(bookingViewModel);
+            }
+
+            return result;
+        }
+
+        private IEnumerable<BookingViewModel> ComposeBookingViewModels(
+            IEnumerable<Booking> bookings,
+            UserShortDto user,
+            IEnumerable<MeetingRoom> rooms)
+        {
+            var result = new List<BookingViewModel>();
+            foreach (var booking in bookings)
+            {
+                var bookingViewModel = _mapper.Map<BookingViewModel>(booking);
+                bookingViewModel.Username = user?.Username ?? "[ERROR]";
+                bookingViewModel.MeetingRoomName = rooms?
+                    .Where(r => r.Id == booking.MeetingRoomId)?
+                    .FirstOrDefault()?.Name ?? "[DELETED ROOM]";
+                result.Add(bookingViewModel);
+            }
+
+            return result;
         }
     }
 }

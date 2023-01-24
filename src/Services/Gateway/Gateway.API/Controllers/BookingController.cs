@@ -54,7 +54,15 @@ namespace MRA.Gateway.Controllers
             
             bool result = _bookingLogic
                 .AddBooking(booking, userId, authorizationHeaderValue);
-            return Ok(result);
+
+            if (result)
+            {
+                return StatusCode(202);
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpDelete]
@@ -63,7 +71,15 @@ namespace MRA.Gateway.Controllers
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             bool result = _bookingLogic
                 .DeleteBooking(data.id, authorizationHeaderValue);
-            return Ok(result);
+
+            if (result)
+            {
+                return StatusCode(202);
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPut]
@@ -72,7 +88,15 @@ namespace MRA.Gateway.Controllers
             var authorizationHeaderValue = Request.Headers["Authorization"].ToString();
             bool result = _bookingLogic
                 .UpdateBooking(booking, authorizationHeaderValue);
-            return Ok(result);
+
+            if (result)
+            {
+                return StatusCode(202);
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
     }
 }
