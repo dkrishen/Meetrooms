@@ -26,14 +26,17 @@ export class AppComponent {
     this.signalrService.notificationTrigger$.subscribe((notificationJson) => {
       var notification = JSON.parse(''+notificationJson);
 
-      if(notification.Successfully){
+      if(notification.Successfully == true){
         this.showSuccess('' + notification.Message);
+        setTimeout(this.resetPage, 3000)
+      }
+      else if(notification.Successfully == false) {
+        this.showFailure('' + notification.Message);
+        setTimeout(this.resetPage, 3000)
       }
       else {
-        this.showFailure('' + notification.Message);
+        this.showInfo('' + notification.Message);
       }
-
-      setTimeout(this.resetPage, 3000)
     });
     
     this.signalrService.updateTrigger$.subscribe(() => {
@@ -51,5 +54,9 @@ export class AppComponent {
 
   showFailure(message: string) {
     Notiflix.Notify.failure(message);
+  }
+
+  showInfo(message: string) {
+    Notiflix.Notify.info(message);
   }
 }
