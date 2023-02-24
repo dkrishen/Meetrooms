@@ -46,7 +46,11 @@ namespace MRA.Bookings
             services.AddDbContext<MRABookingsDbContext>(options =>
                 options.UseMySql(
                     Configuration["Data:Database:ConnectionString"],
-                    new MySqlServerVersion(new Version(8, 0, 30))
+                    new MySqlServerVersion(new Version(8, 0, 30)),
+                    options => options.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: System.TimeSpan.FromSeconds(15),
+                        errorNumbersToAdd: null)
                     ));
             services.AddTransient<IBookingRepository, BookingRepository>();
             services.AddTransient<IBookingLogic, BookingLogic>();

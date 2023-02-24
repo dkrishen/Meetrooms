@@ -79,10 +79,8 @@ namespace MRA.Bookings.Repositories
                 }
                 return true;
             }
-            catch(Exception ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine();
                 return false;
             }
         }

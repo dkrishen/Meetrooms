@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MRA.Gateway.Repository
 {
-    public interface IMeetingRoomRepository
+    public interface IRoomRepository
     {
         public Task<IEnumerable<MeetingRoom>> GetAllRoomsAsync(string token);
         public Task<MeetingRoom> GetRoomByRoomIdAsync(Guid id, string token);

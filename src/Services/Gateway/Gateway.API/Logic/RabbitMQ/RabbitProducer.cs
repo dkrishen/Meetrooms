@@ -46,8 +46,6 @@ namespace Gateway.API.Logic.RabbitMQ
                     string jsonData = JsonConvert.SerializeObject(data);
                     var body = Encoding.UTF8.GetBytes(jsonData);
 
-                    Console.WriteLine("LOG: " + routingKey + '\n' + jsonData);
-
                     channel.BasicPublish(exchange: exchangeName,
                         routingKey: routingKey,
                         basicProperties: null,

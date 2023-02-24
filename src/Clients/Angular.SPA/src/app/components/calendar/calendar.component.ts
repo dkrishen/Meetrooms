@@ -8,6 +8,7 @@ import { SelectDateDialogBoxComponent } from '../select-date-dialog-box/select-d
 import { UserService } from 'src/app/services/user.service';
 import { DOCUMENT } from '@angular/common';
 import { SignalRService } from 'src/app/services/signalr.service';
+import { NotiflixNotification } from 'src/app/models/notiflix-notification';
 
 @Component({
   selector: 'app-calendar',
@@ -76,11 +77,21 @@ export class CalendarComponent implements OnInit {
     dialogRef.componentInstance.isOwner = true;
     dialogRef.componentInstance.createMode = true;
     dialogRef.componentInstance.bookings = this.bookings;
+    var notification = new NotiflixNotification();
 
     dialogRef.afterClosed()
     .subscribe(data => {
       if(data != undefined){
-        this.bookingService.postBooking(data).subscribe(() => {
+        this.bookingService.postBooking(data).subscribe(response => {
+          notification.Message = "your booking is being added.";
+          notification.Successfully = null;
+
+          this.signalrService.callNotification(JSON.stringify(notification))
+        }, err => {
+          notification.Message = "Your booking will not be added. Server error.";
+          notification.Successfully = false;
+
+          this.signalrService.callNotification(JSON.stringify(notification))
         });
       }
     });
@@ -112,6 +123,8 @@ export class CalendarComponent implements OnInit {
       dialogRef.componentInstance.createMode = false;
       dialogRef.componentInstance.bookings = this.bookings;
 
+      var notification = new NotiflixNotification();
+
       dialogRef.afterClosed()
       .subscribe(data => {
         if(data != undefined){
@@ -122,14 +135,32 @@ export class CalendarComponent implements OnInit {
               booking.endTime = data.endTime;
               booking.date = data.date;
 
-              this.bookingService.updateBooking(booking).subscribe(() => {
+              this.bookingService.updateBooking(booking).subscribe(response => {
+                notification.Message = "your booking is being updated.";
+                notification.Successfully = null;
+                
+                this.signalrService.callNotification(JSON.stringify(notification))
+              }, err => {
+                notification.Message = "Your booking will not be updated. Server error.";
+                notification.Successfully = false;
+              
+                this.signalrService.callNotification(JSON.stringify(notification))
               });
             
             }
           }
           else {
             if (booking != undefined){
-              this.bookingService.deleteBooking(booking.id).subscribe(() => {
+              this.bookingService.deleteBooking(booking.id).subscribe(response => {
+                notification.Message = "your booking is being removed.";
+                notification.Successfully = null;
+                
+                this.signalrService.callNotification(JSON.stringify(notification))
+              }, err => {
+                notification.Message = "Your booking will not be removed. Server error.";
+                notification.Successfully = false;
+              
+                this.signalrService.callNotification(JSON.stringify(notification))
               });
             }
           }

@@ -16,7 +16,7 @@ namespace MRA.Gateway.Repository
         public async Task<IEnumerable<UserShortDto>> GetUsersByIdsAsync(IEnumerable<Guid> ids, string token)
         {
             return await Request.Get
-                .SendAsync<IEnumerable<UserShortDto>>("api/user/GetUserNamesByIds", token, ids)
+                .SendAsync<IEnumerable<UserShortDto>>("api/user/UserNamesByIds", token, ids)
                 .ConfigureAwait(false);
         }
     }

@@ -20,18 +20,18 @@ export class BookingService {
 
   getAllBookings(): Observable<Booking[]> {
     this.authService.updateToken();
-    return this.http.get<Booking[]>(this.apiUrl + "api/booking/GetAllBookings")
+    return this.http.get<Booking[]>(this.apiUrl + "api/Booking/All")
   }
   
   getBookingsByUser(): Observable<Booking[]> { 
     this.authService.updateToken();
-    return this.http.get<Booking[]>(this.apiUrl + "api/booking/GetBookingsByUser")
+    return this.http.get<Booking[]>(this.apiUrl + "api/Booking/My")
   }
 
   postBooking(data: InputBookingFormDto): Observable<any> {
     this.authService.updateToken();
     const body = {date: data.date, startTime: data.startTime, endTime: data.endTime}
-    return this.http.post<any>(this.apiUrl + "api/booking/AddBooking", body);
+    return this.http.post<any>(this.apiUrl + "api/Booking", body, {observe: 'response'});
   }
 
   updateBooking(data: Booking): Observable<any> {
@@ -44,12 +44,12 @@ export class BookingService {
       meetingRoomId: data.meetingRoomId,
       userId: data.userId,
     }
-    return this.http.put<any>(this.apiUrl + "api/booking/UpdateBooking", body);
+    return this.http.put<any>(this.apiUrl + "api/Booking", body, { observe: 'response' });
   }
 
   deleteBooking(id: Guid): Observable<any> {
     this.authService.updateToken();
     const body = { id: id }
-    return this.http.delete<any>(this.apiUrl + "api/booking/DeleteBooking", {body: body});
+    return this.http.delete<any>(this.apiUrl + "api/Booking", { body: body, observe: 'response' });
   }
 }

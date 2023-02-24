@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MRA.Gateway.Repository
 {
-    public class MeetingRoomRepository : RepositoryBase , IMeetingRoomRepository
+    public class RoomRepository : RepositoryBase , IRoomRepository
     {
-        public MeetingRoomRepository(IConfiguration configuration) 
+        public RoomRepository(IConfiguration configuration) 
             : base(configuration.GetSection("MRA.Rooms").GetValue<string>("Url"), configuration)
         {
         }
@@ -16,21 +16,21 @@ namespace MRA.Gateway.Repository
         public async Task<IEnumerable<MeetingRoom>> GetAllRoomsAsync(string token)
         {
             return await Request.Get
-                .SendAsync<IEnumerable<MeetingRoom>>("api/rooms/GetAllRooms", token)
+                .SendAsync<IEnumerable<MeetingRoom>>("api/rooms/AllRooms", token)
                 .ConfigureAwait(false);
         }
 
         public async Task<MeetingRoom> GetRoomByRoomIdAsync(Guid id, string token)
         {
             return await Request.Get
-                .SendAsync<MeetingRoom>("api/rooms/GetRoomById, token, id")
+                .SendAsync<MeetingRoom>("api/rooms/RoomById, token, id")
                 .ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<MeetingRoom>> GetRoomsByRoomIdsAsync(IEnumerable<Guid> ids, string token)
         {
             return await Request.Get
-                .SendAsync<IEnumerable<MeetingRoom>>("api/rooms/GetRoomsByIds", token, ids)
+                .SendAsync<IEnumerable<MeetingRoom>>("api/rooms/RoomsByIds", token, ids)
                 .ConfigureAwait(false);
         }
     }

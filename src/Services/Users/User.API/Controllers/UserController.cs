@@ -21,7 +21,7 @@ namespace MRA.Users.Controllers
         }
 
         [HttpGet]
-        [Route("GetUserNamesByIds")]
+        [Route("UserNamesByIds")]
         public async Task<IActionResult> GetUserInfoAsync(string data)
         {
             var userIds = JsonConvert.DeserializeObject<IEnumerable<string>>(data ?? "[]");
@@ -29,7 +29,7 @@ namespace MRA.Users.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllUserNames")]
+        [Route("AllUserNames")]
         public async Task<IActionResult> GetAllUserNamesAsync()
         {
             return Ok(await _userRepository.GetAllUserNamesAsync());

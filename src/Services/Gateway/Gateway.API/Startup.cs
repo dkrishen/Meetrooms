@@ -56,7 +56,7 @@ namespace MRA.Gateway
                });
             });
 
-            services.AddTransient<IMeetingRoomRepository, MeetingRoomRepository>();
+            services.AddTransient<IRoomRepository, RoomRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBookingRepository, BookingRepository>();
             services.AddTransient<IBookingLogic, BookingLogic>();
